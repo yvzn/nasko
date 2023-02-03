@@ -1,0 +1,15 @@
+{
+	"name": "nasko",
+	"version": "0.1.0",
+	"description": "Simple and pragmatic tips to welcome your future baby",
+	"private": "true",
+	"scripts": {
+		"dev": "eleventy --serve",
+		"build": "eleventy"
+	},
+	"author": "Yvan Razafindramanana",
+	"license": "Apache-2.0",
+	"devDependencies": {
+		"@11ty/eleventy": "^1.0.2"
+	}
+}
