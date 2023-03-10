@@ -1,6 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<body>
-	Hello world
-</body>
-</html>
+---
+title: Welcome
+---
+
+<main>
+	<a href="fr/consentement-cookies">Français</a>
+</main>
+
+<script>
+	const hasCookieConsent = hasCookie("cookie_consent", "true")
+	const hasEta = hasCookie("eta")
+
+	const overrideLanguage = hasQueryStringOverride("lang")
+
+	if (!overrideLanguage) {
+		if (navigator.language && navigator.language.indexOf('fr') > -1) {
+			const preferredLanguage = 'fr'
+
+			let homePage = "/"
+			if (!hasCookieConsent) {
+				homePage = "/consentement-cookies"
+			} else if (!hasEta) {
+				homePage = "/estimation-date-naissance"
+			}
+
+			window.location.assign(preferredLanguage + homePage)
+		}
+	}
+</script>

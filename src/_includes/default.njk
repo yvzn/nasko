@@ -1,0 +1,24 @@
+---
+lang: en
+title: Welcome
+---
+
+{% set util_js %}
+{% include "../js/util.js" %}
+{% endset %}
+
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{{ title }} - Nasko</title>
+</head>
+<body>
+<script>
+{{ util_js | safe }}
+</script>
+
+{{ content | safe }}
+</body>
+</html>
