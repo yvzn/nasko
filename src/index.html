@@ -7,19 +7,19 @@ title: Welcome
 </main>
 
 <script>
-	const hasCookieConsent = hasCookie("cookie_consent", "true")
-	const hasEta = hasCookie("eta")
+	var hasCookieConsent = hasCookie("cookie-consent", "true")
+	var hasDateOfBirth = hasCookie("date-of-birth")
 
-	const overrideLanguage = hasQueryStringOverride("lang")
+	var overrideLanguage = hasSearchParam("lang")
 
 	if (!overrideLanguage) {
 		if (navigator.language && navigator.language.indexOf('fr') > -1) {
-			const preferredLanguage = 'fr'
+			var preferredLanguage = 'fr'
 
-			let homePage = "/"
+			var homePage = "/"
 			if (!hasCookieConsent) {
 				homePage = "/consentement-cookies"
-			} else if (!hasEta) {
+			} else if (!hasDateOfBirth) {
 				homePage = "/estimation-date-naissance"
 			}
 

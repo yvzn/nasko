@@ -7,8 +7,9 @@ title: Bienvenue
 </main>
 
 <script>
-	let eta = undefined
+	var dateOfBirth = getSearchParam("date-of-birth") || getCookie("date-of-birth");
 
-	const hasEta = hasCookie("eta")
-
+	if (!dateOfBirth) {
+		window.location.assign('estimation-date-naissance')
+	}
 </script>

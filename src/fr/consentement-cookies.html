@@ -12,15 +12,14 @@ title: Utilisation des cookies
 </main>
 
 <script>
-	const hasCookieConsent = hasCookie("cookie_consent", "true")
-	const hasEta = hasCookie("eta")
+	var hasCookieConsent = hasCookie("cookie-consent", "true")
+	var hasDateOfBirth = hasCookie("date-of-birth")
 
-	const overrideCookieConsent = hasQueryStringOverride("reset")
+	var overrideCookieConsent = hasSearchParam("reset")
 
-	debugger
 	if (hasCookieConsent && !overrideCookieConsent) {
-		const homePage = '../estimation-date-naissance'
-		if (hasEta) {
+		var homePage = '../estimation-date-naissance'
+		if (hasDateOfBirth) {
 			homePage = '../'
 		}
 		window.location.assign(homePage)
@@ -28,13 +27,13 @@ title: Utilisation des cookies
 
 	function saveCookieConsent(submitEvent) {
 		if (event.submitter && event.submitter.value === "Accepter") {
-			document.cookie = "cookie_consent=true; path=/; expires=Fri, 31 Dec 9999 23:59:59 GMT"
+			document.cookie = "cookie-consent=true; path=/; expires=Fri, 31 Dec 9999 23:59:59 GMT"
 		} else {
-			document.cookie = "cookie_consent=true; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"
-			document.cookie = "eta=undefined; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"
+			document.cookie = "cookie-consent=true; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"
+			document.cookie = "date-of-birth=undefined; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"
 		}
 	}
 
-	const form = document.getElementsByTagName("form")[0];
+	var form = document.getElementsByTagName("form")[0];
 	form.addEventListener("submit", saveCookieConsent);
 </script>

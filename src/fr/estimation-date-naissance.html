@@ -6,8 +6,22 @@ title: Date de naissance
 	<form action="../">
 		<label>
 			Date de naissance estimée:
-			<input type="date" name="eta" required placeholder="jour/mois/annee">
+			<input type="date" name="date-of-birth" id="date-of-birth" required placeholder="jour/mois/annee">
 		</label>
 		<input type="submit" value="Continuer">
 	</form>
 </main>
+
+<script>
+	var hasCookieConsent = hasCookie("cookie-consent", "true")
+
+	function saveDateOfBirth() {
+		if (hasCookieConsent) {
+			var dateOfBirth = document.getElementById("date-of-birth");
+			document.cookie = 'date-of-birth=' + dateOfBirth.value + '; path=/; expires=Fri, 31 Dec 9999 23:59:59 GMT'
+		}
+	}
+
+	var form = document.getElementsByTagName("form")[0];
+	form.addEventListener("submit", saveDateOfBirth);
+</script>
