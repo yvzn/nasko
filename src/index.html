@@ -10,20 +10,16 @@ title: Welcome
 	var hasCookieConsent = hasCookie("cookie-consent", "true")
 	var hasDateOfBirth = hasCookie("date-of-birth")
 
-	var overrideLanguage = hasSearchParam("lang")
-
-	if (!overrideLanguage) {
-		if (navigator.language && navigator.language.indexOf('fr') > -1) {
-			var preferredLanguage = 'fr'
-
-			var homePage = "/"
-			if (!hasCookieConsent) {
-				homePage = "/consentement-cookies"
-			} else if (!hasDateOfBirth) {
-				homePage = "/estimation-date-naissance"
-			}
-
-			window.location.assign(preferredLanguage + homePage)
+	var homePage = undefined
+	if (hasCookieConsent) {
+		if (hasDateOfBirth) {
+			homePage = 'fr/'
+		} else {
+			homePage = 'fr/estimation-date-naissance'
 		}
+	}
+
+	if (homePage) {
+		window.location.assign(homePage)
 	}
 </script>

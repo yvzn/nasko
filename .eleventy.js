@@ -1,6 +1,7 @@
 const { minify } = require("terser");
 
 module.exports = function (eleventyConfig) {
+	eleventyConfig.addPassthroughCopy("src/assets");
 	eleventyConfig.addNunjucksAsyncFilter("jsmin", jsmin);
 
 	// Return your Object options:

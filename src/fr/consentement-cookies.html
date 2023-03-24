@@ -12,19 +12,6 @@ title: Utilisation des cookies
 </main>
 
 <script>
-	var hasCookieConsent = hasCookie("cookie-consent", "true")
-	var hasDateOfBirth = hasCookie("date-of-birth")
-
-	var overrideCookieConsent = hasSearchParam("reset")
-
-	if (hasCookieConsent && !overrideCookieConsent) {
-		var homePage = '../estimation-date-naissance'
-		if (hasDateOfBirth) {
-			homePage = '../'
-		}
-		window.location.assign(homePage)
-	}
-
 	function saveCookieConsent(submitEvent) {
 		if (submitEvent.submitter && submitEvent.submitter.value === "Accepter") {
 			setCookie("cookie-consent", true)
