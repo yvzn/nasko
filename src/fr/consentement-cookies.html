@@ -26,7 +26,7 @@ title: Utilisation des cookies
 	}
 
 	function saveCookieConsent(submitEvent) {
-		if (event.submitter && event.submitter.value === "Accepter") {
+		if (submitEvent.submitter && submitEvent.submitter.value === "Accepter") {
 			document.cookie = "cookie-consent=true; path=/; expires=Fri, 31 Dec 9999 23:59:59 GMT"
 		} else {
 			document.cookie = "cookie-consent=true; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"
@@ -34,6 +34,6 @@ title: Utilisation des cookies
 		}
 	}
 
-	var form = document.getElementsByTagName("form")[0];
-	form.addEventListener("submit", saveCookieConsent);
+	var form = document.getElementsByTagName("form")[0]
+	form.addEventListener("submit", saveCookieConsent)
 </script>

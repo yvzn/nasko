@@ -3,7 +3,7 @@ function hasCookie(name, value) {
 	return document.cookie && document.cookie.indexOf(nameValuePair) > -1
 }
 
-var parseCookies = createParser('=', ';');
+var parseCookies = createParser('=', ';')
 
 // eslint-disable-next-line no-unused-vars
 function getCookie(name) {
@@ -19,37 +19,37 @@ function hasSearchParam(name) {
 	return window.location.search && window.location.search.indexOf(needle) > -1
 }
 
-var parseSearchParams = createParser('=', '&');
+var parseSearchParams = createParser('=', '&')
 
 // eslint-disable-next-line no-unused-vars
 function getSearchParam(name) {
-	if (!hasSearchParam(name)) return undefined;
+	if (!hasSearchParam(name)) return undefined
 
 	var allSearchParams = parseSearchParams(
 		window.location.search.substring(1) // remove the leading question mark '?'
-	);
+	)
 
-	return allSearchParams[name];
+	return allSearchParams[name]
 }
 
 function createParser(keyValueSeparator, entrySeparator) {
 	return function (string) {
-		if (!string) return undefined;
-		var result = {};
+		if (!string) return undefined
+		var result = {}
 
-		var entries = string.split(entrySeparator);
+		var entries = string.split(entrySeparator)
 		for(var i = 0; i < entries.length; ++i) {
-			var keyValue = entries[i].split(keyValueSeparator);
-			var key = decodeURIComponent(keyValue[0].trim());
+			var keyValue = entries[i].split(keyValueSeparator)
+			var key = decodeURIComponent(keyValue[0].trim())
 
-			var value = undefined;
+			var value = undefined
 			if (keyValue.length > 1) {
-				value = decodeURIComponent(keyValue[1].trim());
+				value = decodeURIComponent(keyValue[1].trim())
 			}
 
-			result[key] = value;
+			result[key] = value
 		}
 
-		return result;
+		return result
 	}
 }
