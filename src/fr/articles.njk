@@ -1,0 +1,12 @@
+---
+permalink: fr/articles.json
+layout: blank
+---
+{
+	"articles": [ {% for item in collections.article_francais %}
+		{
+			"url": "{{ item.url }}",
+			"day": {{ item.data.day }}
+		}{% if not loop.last %},{% endif %}{% endfor %}
+	]
+}

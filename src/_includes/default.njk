@@ -16,7 +16,7 @@ title: Welcome
 </head>
 <body>
 <script>
-{{ util_js | safe }}
+{{ util_js | jsmin | safe }}
 </script>
 
 {{ content | safe }}

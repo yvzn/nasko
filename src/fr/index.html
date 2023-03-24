@@ -3,13 +3,102 @@ title: Bienvenue
 ---
 
 <main>
-	OK 👍
+	Loading ...
 </main>
 
 <script>
-	var dateOfBirth = getSearchParam("date-of-birth") || getCookie("date-of-birth");
+	var dateOfBirthInput = getSearchParam("date-of-birth") || getCookie("date-of-birth")
+	var dateOfBirth = Boolean(dateOfBirthInput) && (parseFrenchDate(dateOfBirthInput) || parseDate(dateOfBirthInput))
 
 	if (!dateOfBirth) {
 		window.location.assign('estimation-date-naissance')
+	}
+
+	var daysUntilBirth = computeDaysBetween(dateOfBirth, new Date())
+	var articles = []
+
+	loadArticleList(
+		function success(json) {
+			articles = json.articles
+			var latestArticle = findLatestArticle()
+			loadArticle(
+				latestArticle,
+				function success(html) {
+					displayArticle(html)
+				},
+				handleError
+			)
+		},
+		handleError);
+
+	function parseFrenchDate(date) {
+		return new Date(Date.parse(date.split("/").reverse().join("-")))
+	}
+
+	function parseDate(date) {
+		return new Date(date)
+	}
+
+	function computeDaysBetween(latestDate, earliestDate) {
+		var millisecondsBetweenDates = latestDate.getTime() - earliestDate.getTime()
+		var millisecondsInDay = 1000 * 60 * 60 * 24
+		return Math.floor(millisecondsBetweenDates / millisecondsInDay)
+	}
+
+	function loadArticleList(successCallback, errorCallback) {
+		return load("articles.json", "json", successCallback, errorCallback)
+	}
+
+	function handleError(reason) {
+		console.error(reason)
+	}
+
+	function findLatestArticle() {
+		var latestArticle = { url: undefined, day: Number.NEGATIVE_INFINITY }
+		for (var i = 0; i < articles.length; ++i) {
+			var article = articles[i]
+			if (latestArticle.day < article.day && article.day <= daysUntilBirth) {
+				latestArticle = article
+			}
+		}
+		if (latestArticle.url) {
+			return latestArticle
+		}
+		return undefined
+	}
+
+	function loadArticle(article, successCallback, errorCallback) {
+		return load(article.url, "text", successCallback, errorCallback)
+	}
+
+	function displayArticle(html) {
+		var parent = document.getElementsByTagName('main')[0]
+		var startPos = html.indexOf('<article')
+		var endPos = html.indexOf('</article>')
+		if (startPos > -1 && endPos > -1) {
+			var content = html.substring(startPos, endPos + '</article>'.length)
+			parent.innerHTML = content
+		}
+	}
+
+	function load(url, responseType, successCallback, errorCallback) {
+		var request = new XMLHttpRequest()
+		request.addEventListener("load", requestListener)
+		request.addEventListener("error", errorCallback)
+		request.addEventListener("timeout", errorCallback)
+		request.timeout = 1000
+		request.responseType = responseType
+		request.open("GET", url, true)
+		request.send()
+
+		function requestListener(event) {
+			if (request.readyState === 4) {
+				if (request.status === 200) {
+					successCallback(request.response)
+				} else {
+					errorCallback(request.statusText)
+				}
+			}
+		}
 	}
 </script>
