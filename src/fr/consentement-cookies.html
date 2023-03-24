@@ -27,10 +27,13 @@ title: Utilisation des cookies
 
 	function saveCookieConsent(submitEvent) {
 		if (submitEvent.submitter && submitEvent.submitter.value === "Accepter") {
-			document.cookie = "cookie-consent=true; path=/; expires=Fri, 31 Dec 9999 23:59:59 GMT"
+			setCookie("cookie-consent", true)
+			setCookie("cookie-consent-date", new Date().toString())
 		} else {
-			document.cookie = "cookie-consent=true; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"
-			document.cookie = "date-of-birth=undefined; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"
+			var alreadyExpired = "Thu, 01 Jan 1970 00:00:00 GMT"
+			setCookie("cookie-consent", false, alreadyExpired)
+			setCookie("cookie-consent-date", undefined, alreadyExpired)
+			setCookie("date-of-birth", undefined, alreadyExpired)
 		}
 	}
 

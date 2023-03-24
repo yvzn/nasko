@@ -14,6 +14,13 @@ function getCookie(name) {
 	return allCookies[name]
 }
 
+// eslint-disable-next-line no-unused-vars
+function setCookie(name, value, expirationDate) {
+	var expires = expirationDate || "Fri, 31 Dec 9999 23:59:59 GMT"
+
+	document.cookie = name + "=" + value + "; path=/; expires=" + expires
+}
+
 function hasSearchParam(name) {
 	var needle = name + '='
 	return window.location.search && window.location.search.indexOf(needle) > -1
@@ -38,7 +45,7 @@ function createParser(keyValueSeparator, entrySeparator) {
 		var result = {}
 
 		var entries = string.split(entrySeparator)
-		for(var i = 0; i < entries.length; ++i) {
+		for (var i = 0; i < entries.length; ++i) {
 			var keyValue = entries[i].split(keyValueSeparator)
 			var key = decodeURIComponent(keyValue[0].trim())
 

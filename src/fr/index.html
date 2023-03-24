@@ -32,11 +32,18 @@ title: Bienvenue
 		handleError);
 
 	function parseFrenchDate(date) {
-		return new Date(Date.parse(date.split("/").reverse().join("-")))
+		var parsed = new Date(Date.parse(date.split("/").reverse().join("-")))
+		return validateDate(parsed)
 	}
 
 	function parseDate(date) {
-		return new Date(date)
+		var parsed = new Date(date)
+		return validateDate(parsed)
+	}
+
+	function validateDate(date) {
+		if (isNaN(date.getTime())) return undefined
+		return date
 	}
 
 	function computeDaysBetween(latestDate, earliestDate) {

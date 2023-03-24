@@ -18,7 +18,7 @@ title: Date de naissance
 	function saveDateOfBirth() {
 		if (hasCookieConsent) {
 			var dateOfBirth = document.getElementById("date-of-birth")
-			document.cookie = 'date-of-birth=' + dateOfBirth.value + '; path=/; expires=Fri, 31 Dec 9999 23:59:59 GMT'
+			setCookie("date-of-birth", dateOfBirth.value)
 		}
 	}
 
