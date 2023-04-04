@@ -17,6 +17,12 @@ module.exports = function (eleventyConfig) {
 		}
 	});
 
+	eleventyConfig.addCollection("articlesFrancaisTries", function (collectionApi) {
+		return collectionApi.getFilteredByTag("article_francais").sort(function (a, b) {
+			return b.data.daysLeft - a.data.daysLeft
+		})
+	});
+
 	// Return your Object options:
 	return {
 		dir: {

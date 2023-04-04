@@ -3,7 +3,13 @@ title: Bienvenue
 ---
 
 <main>
-	Loading ...
+	<nav>Menu</nav>
+	<header></header>
+	<section>Chargement...</section>
+	<footer>
+		<button id="previous" class="action secondary" disabled>Précédent</button>
+		<button id="next" class="action secondary" disabled>Suivant</button>
+	</footer>
 </main>
 
 <script>
@@ -15,7 +21,10 @@ title: Bienvenue
 	}
 
 	var daysLeftUntilBirth = computeDaysBetween(dateOfBirth, new Date())
+	displayCurrentWeekNumber()
+
 	var articles = []
+	var currentArticleIndex = -1
 
 	loadArticleList(
 		function success(json) {
@@ -24,12 +33,14 @@ title: Bienvenue
 			loadArticle(
 				latestArticle,
 				function success(html) {
+					currentArticleIndex = latestArticle.index
 					displayArticle(html)
+					enableFooterButtons()
 				},
 				handleError
 			)
 		},
-		handleError);
+		handleError)
 
 	function parseFrenchDate(date) {
 		var parsed = new Date(Date.parse(date.split("/").reverse().join("-")))
@@ -61,11 +72,10 @@ title: Bienvenue
 	}
 
 	function findLatestArticle() {
-		var latestArticle = { url: undefined, daysLeft: Number.POSITIVE_INFINITY }
-		for (var i = 0; i < articles.length; ++i) {
-			var article = articles[i]
-			if (daysLeftUntilBirth <= article.daysLeft && article.daysLeft <= latestArticle.daysLeft) {
-				latestArticle = article
+		var latestArticle = { url: undefined, daysLeft: Number.POSITIVE_INFINITY, index: -1 }
+		for (var i = 0; i < articles.length && daysLeftUntilBirth <= articles[i].daysLeft; ++i) {
+			if (articles[i].daysLeft <= latestArticle.daysLeft) {
+				latestArticle = articles[i]
 			}
 		}
 		if (latestArticle.url) {
@@ -78,16 +88,6 @@ title: Bienvenue
 		return load(article.url, "text", successCallback, errorCallback)
 	}
 
-	function displayArticle(html) {
-		var parent = document.getElementsByTagName('main')[0]
-		var startPos = html.indexOf('<article')
-		var endPos = html.indexOf('</article>')
-		if (startPos > -1 && endPos > -1) {
-			var content = html.substring(startPos, endPos + '</article>'.length)
-			parent.innerHTML = content
-		}
-	}
-
 	function load(url, responseType, successCallback, errorCallback) {
 		var request = new XMLHttpRequest()
 		request.addEventListener("load", requestListener)
@@ -98,7 +98,7 @@ title: Bienvenue
 		request.open("GET", url, true)
 		request.send()
 
-		function requestListener(event) {
+		function requestListener() {
 			if (request.readyState === 4) {
 				if (request.status === 200) {
 					successCallback(request.response)
@@ -108,4 +108,54 @@ title: Bienvenue
 			}
 		}
 	}
+
+	function displayArticle(html) {
+		var parent = document.getElementsByTagName('section')[0]
+		var startPos = html.indexOf('<article')
+		var endPos = html.indexOf('</article>')
+		if (startPos > -1 && endPos > -1) {
+			var content = html.substring(startPos, endPos + '</article>'.length)
+			parent.innerHTML = content
+		}
+	}
+
+	function displayCurrentWeekNumber() {
+		var weeksLeft = Math.floor(daysLeftUntilBirth / 7)
+		var currentWeekNumber = 39 - weeksLeft
+		var parent = document.getElementsByTagName('header')[0]
+		parent.innerHTML = '<h2>' + currentWeekNumber + ' semaines</h2>'
+	}
+
+	function enableFooterButtons() {
+		var previousButton = document.getElementById('previous')
+		previousButton.disabled = currentArticleIndex < 1
+
+		var nextButton = document.getElementById('next')
+		nextButton.disabled = currentArticleIndex >= articles.length - 1
+	}
+
+	var handlePreviousButton = createHandler(function (i) { return i - 1 })
+	document.getElementById('previous').addEventListener('click', handlePreviousButton)
+
+	var handleNextButton = createHandler(function (i) { return i + 1 })
+	document.getElementById('next').addEventListener('click', handleNextButton)
+
+	function createHandler(updateIndex) {
+		return function () {
+			var newIndex = updateIndex(currentArticleIndex)
+			var newArticle = articles[newIndex]
+			loadArticle(
+				newArticle,
+				function success(html) {
+					currentArticleIndex = newArticle.index
+					displayArticle(html)
+					enableFooterButtons()
+				},
+				handleError
+			)
+		}
+	}
+
+	var handleResetLink = createHandler(function () { return findLatestArticle().index })
+	document.getElementsByTagName('header')[0].addEventListener('click', handleResetLink)
 </script>

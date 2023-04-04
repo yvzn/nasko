@@ -1,8 +1,9 @@
 $background-color: whitesmoke;
-$foreground-color: #291711;
-$neutral-color: white;
+$foreground-color: #1d1a05;
+$white-color: white;
 $accent1-color: #6cae75;
 $accent2-color: #de9e36;
+$gray-color: #6d6a75;
 
 $space-1x: 1rem;
 $space-2x: 2 * $space-1x;
@@ -28,7 +29,7 @@ body {
 }
 
 main {
-	background-color: $neutral-color;
+	background-color: $white-color;
 	box-shadow:
 		/* https://shadows.brumm.af/ */
 		0px 12.5px 10px -10px rgba(0, 0, 0, 0.035),
@@ -39,6 +40,11 @@ main {
 
 h1 {
 	margin: 0 0 $space-1x 0;
+	color: $accent2-color;
+}
+
+h2 {
+	margin: 0;
 	color: $accent2-color;
 }
 
@@ -64,11 +70,11 @@ section {
 	&.primary {
 		background-color: $accent1-color;
 		border-color: transparent;
-		color: $neutral-color;
+		color: $white-color;
 	}
 
 	&.secondary {
-		background-color: $neutral-color;
+		background-color: $white-color;
 		border-color: $accent1-color;
 		color: $accent1-color;
 	}
@@ -85,4 +91,42 @@ p {
 label {
 	display: block;
 	margin: 0 0 $space-1x 0;
+}
+
+input[type="date"] {
+	border-radius: .75rem;
+	border: solid .1rem $gray-color;
+	cursor: pointer;
+	font-size: 1rem;
+	padding: .5rem;
+}
+
+header {
+	padding: $space-1x;
+	position: absolute;
+}
+
+nav {
+	padding: $space-1x;
+	position: absolute;
+	right: 0;
+}
+
+footer {
+	bottom: 0;
+	box-sizing: border-box;
+	padding: $space-1x;
+	position: absolute;
+	text-align: right;
+	width: 100%;
+
+	.action {
+		&#previous {
+			float: left;
+		}
+
+		&[disabled] {
+			display: none;
+		}
+	}
 }
