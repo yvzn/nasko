@@ -1,11 +1,11 @@
 ---
-title: Bienvenue
+title: Accueillir bébé
 ---
 
 <main>
-	<nav>Menu</nav>
 	<header></header>
-	<section>Chargement...</section>
+	<nav><a href="./menu">Menu</a></nav>
+	<section>Veuillez patienter...</section>
 	<footer>
 		<button id="previous" class="action secondary" disabled>Précédent</button>
 		<button id="next" class="action secondary" disabled>Suivant</button>
@@ -21,7 +21,7 @@ title: Bienvenue
 	}
 
 	var daysLeftUntilBirth = computeDaysBetween(dateOfBirth, new Date())
-	displayCurrentWeekNumber()
+	displayCurrentWeekNumber(daysLeftUntilBirth)
 
 	var articles = []
 	var currentArticleIndex = -1
@@ -36,6 +36,7 @@ title: Bienvenue
 					currentArticleIndex = latestArticle.index
 					displayArticle(html)
 					enableFooterButtons()
+					displayCurrentWeekNumber(latestArticle.daysLeft)
 				},
 				handleError
 			)
@@ -119,11 +120,19 @@ title: Bienvenue
 		}
 	}
 
-	function displayCurrentWeekNumber() {
-		var weeksLeft = Math.floor(daysLeftUntilBirth / 7)
-		var currentWeekNumber = 39 - weeksLeft
+	function displayCurrentWeekNumber(daysLeft) {
+		var weeksLeft = Math.floor(daysLeft / 7)
+		var currentWeekNumber = 40 - weeksLeft
+
+		var label = "Au départ"
+		if (currentWeekNumber > 1) {
+			label = currentWeekNumber + ' semaines'
+		} else if (currentWeekNumber > 0) {
+			label = currentWeekNumber + ' semaine'
+		}
+
 		var parent = document.getElementsByTagName('header')[0]
-		parent.innerHTML = '<h2>' + currentWeekNumber + ' semaines</h2>'
+		parent.innerHTML = '<h2>' + label + '</h2>'
 	}
 
 	function enableFooterButtons() {
@@ -150,6 +159,7 @@ title: Bienvenue
 					currentArticleIndex = newArticle.index
 					displayArticle(html)
 					enableFooterButtons()
+					displayCurrentWeekNumber(newArticle.daysLeft)
 				},
 				handleError
 			)

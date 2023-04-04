@@ -7,6 +7,7 @@ $gray-color: #6d6a75;
 
 $space-1x: 1rem;
 $space-2x: 2 * $space-1x;
+$space-4x: 4 * $space-1x;
 
 * {
 	font-family:
@@ -128,5 +129,17 @@ footer {
 		&[disabled] {
 			display: none;
 		}
+	}
+}
+
+.menu {
+	ul {
+		margin: 0;
+		padding: $space-4x 0 0 $space-4x;
+	}
+
+	li {
+		list-style-type: none;
+		margin: 0 0 $space-1x 0;
 	}
 }

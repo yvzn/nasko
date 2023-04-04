@@ -1,0 +1,26 @@
+---
+title: Menu
+---
+
+<main class="menu">
+	<header>
+		<h2>Menu</h2>
+	</header>
+	<nav><a id="back" href="../estimation-date-naissance">Fermer</a></nav>
+	<section>
+		<ul>
+			<li><a href="../estimation-date-naissance">Changer la date de naissance estimée</a></li>
+			<li><a href="../consentement-cookies">Gestion des cookies</a></li>
+		</ul>
+	</section>
+</main>
+
+<script>
+	function goBack(event) {
+		event.preventDefault()
+		history.back()
+	}
+
+	var back = document.getElementById("back")
+	back.addEventListener("click", goBack)
+</script>
