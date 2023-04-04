@@ -6,7 +6,7 @@ layout: blank
 	"articles": [ {% for item in collections.article_francais %}
 		{
 			"url": "{{ item.url }}",
-			"day": {{ item.data.day }}
+			"daysLeft": {{ item.data.daysLeft }}
 		}{% if not loop.last %},{% endif %}{% endfor %}
 	]
 }

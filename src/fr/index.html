@@ -14,7 +14,7 @@ title: Bienvenue
 		window.location.assign('estimation-date-naissance')
 	}
 
-	var daysUntilBirth = computeDaysBetween(dateOfBirth, new Date())
+	var daysLeftUntilBirth = computeDaysBetween(dateOfBirth, new Date())
 	var articles = []
 
 	loadArticleList(
@@ -61,10 +61,10 @@ title: Bienvenue
 	}
 
 	function findLatestArticle() {
-		var latestArticle = { url: undefined, day: Number.NEGATIVE_INFINITY }
+		var latestArticle = { url: undefined, daysLeft: Number.POSITIVE_INFINITY }
 		for (var i = 0; i < articles.length; ++i) {
 			var article = articles[i]
-			if (latestArticle.day < article.day && article.day <= daysUntilBirth) {
+			if (daysLeftUntilBirth <= article.daysLeft && article.daysLeft <= latestArticle.daysLeft) {
 				latestArticle = article
 			}
 		}
