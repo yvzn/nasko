@@ -8,7 +8,7 @@ title: Accueillir bébé
 	<section>Veuillez patienter...</section>
 	<footer>
 		<button id="previous" class="action secondary" disabled>Précédent</button>
-		<button id="next" class="action secondary" disabled>Suivant</button>
+		<button id="next" class="action primary" disabled>Suivant</button>
 	</footer>
 </main>
 
@@ -36,7 +36,6 @@ title: Accueillir bébé
 					currentArticleIndex = latestArticle.index
 					displayArticle(html)
 					enableFooterButtons()
-					displayCurrentWeekNumber(latestArticle.daysLeft)
 				},
 				handleError
 			)
@@ -159,7 +158,6 @@ title: Accueillir bébé
 					currentArticleIndex = newArticle.index
 					displayArticle(html)
 					enableFooterButtons()
-					displayCurrentWeekNumber(newArticle.daysLeft)
 				},
 				handleError
 			)
