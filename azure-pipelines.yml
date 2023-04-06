@@ -1,0 +1,46 @@
+variables:
+- group: "Azure"
+
+trigger:
+  branches:
+    include:
+    - main
+
+pool:
+  vmImage: ubuntu-latest
+
+jobs:
+- job: CI
+  steps:
+  - task: Npm@1
+    displayName: 'npm install'
+    inputs:
+      command: 'ci'
+  - task: Npm@1
+    displayName: 'npm build'
+    inputs:
+      command: 'custom'
+      customCommand: 'run build'
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '_site'
+      publishLocation: 'pipeline'
+      artifact: 'site'
+
+- deployment: CD
+  dependsOn: CI
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  environment: 'Azure'
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - task: AzureCLI@2
+          displayName: 'upload files to Azure'
+          inputs:
+            azureSubscription: '$(azureSubscription)'
+            scriptType: 'pscore'
+            scriptLocation: 'inlineScript'
+            inlineScript: |
+              az storage blob delete-batch --account-key $(storageAccountKey) --account-name $(storageAccountName) --source `$web --delete-snapshots include
+              az storage blob upload-batch --account-key $(storageAccountKey) --account-name $(storageAccountName) --destination `$web --source $(Pipeline.Workspace)/site
