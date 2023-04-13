@@ -1,4 +1,4 @@
-/* https://coolors.co/f5f5f5-1d1a05-6cae75-de9e36-6d6a75 */
+/* https://coolors.co/f5f5f5-1d1a05-47804e-934b00-bb6b00 */
 $background-color: whitesmoke;
 $foreground-color: #1d1a05;
 $white-color: white;
@@ -22,7 +22,7 @@ html {
 }
 
 body {
-	background-color: $background-color;
+	background-color: $white-color;
 	color: $foreground-color;
 	height: 100%;
 	margin: 0 auto;
@@ -32,10 +32,6 @@ body {
 
 main {
 	background-color: $white-color;
-	box-shadow:
-		/* https://shadows.brumm.af/ */
-		0px 12.5px 10px -10px rgba(0, 0, 0, 0.035),
-		0px 100px 80px -10px rgba(0, 0, 0, 0.07);
 	height: 100%;
 	position: relative;
 }
@@ -70,7 +66,7 @@ form {
 	font-size: 1rem;
 	margin: .25rem .5rem;
 	outline-offset: .25rem;
-	padding: .5rem 2rem;
+	padding: .5rem 1rem;
 	text-decoration: underline;
 
 	&.primary {
@@ -91,6 +87,17 @@ form {
 }
 
 @media (min-width: 576px) {
+	body {
+		background-color: $background-color;
+	}
+
+	main {
+		box-shadow:
+			/* https://shadows.brumm.af/ */
+			0px 12.5px 10px -10px rgba(0, 0, 0, 0.035),
+			0px 100px 80px -10px rgba(0, 0, 0, 0.07);
+	}
+
 	.action {
 		padding: .5rem 4rem;
 	}
@@ -137,7 +144,7 @@ footer {
 	width: 100%;
 
 	.action {
-		&:last-child {
+		&:nth-child(2), &:nth-child(3) {
 			float: right;
 		}
 
@@ -157,4 +164,12 @@ footer {
 		list-style-type: none;
 		margin: 0 0 $space-1x 0;
 	}
+}
+
+progress {
+	accent-color: $accent1-color;
+}
+
+#loading, #error {
+	display: none;
 }

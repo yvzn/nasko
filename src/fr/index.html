@@ -5,10 +5,21 @@ title: Accueillir bébé
 <main>
 	<header></header>
 	<nav><a href="./menu/">Menu</a></nav>
-	<section>Veuillez patienter...</section>
+	<section id="content">
+		<progress>Chargement...</progress>
+	</section>
+	<section id="loading">
+		<progress>Chargement...</progress>
+	</section>
+	<section id="error">
+		<img src="/assets/00112-1886873004.png" alt="" width="256" height="256" />
+		<h1>Erreur</h1>
+		<p>Cette page n'a pas pu être chargée...</p>
+	</section>
 	<footer>
 		<button id="previous" class="action secondary" disabled>Précédent</button>
 		<button id="next" class="action primary" disabled>Suivant</button>
+		<button id="retry" class="action primary" disabled>Réessayer</button>
 	</footer>
 </main>
 
@@ -23,24 +34,53 @@ title: Accueillir bébé
 	var daysLeftUntilBirth = computeDaysBetween(dateOfBirth, new Date())
 	displayCurrentWeekNumber(daysLeftUntilBirth)
 
+	var showContent = setDisplay('content', true)
+	var hideContent = setDisplay('content', false)
+	var showLoadingSpinner = setDisplay('loading', true)
+	var hideLoadingSpinner = setDisplay('loading', false)
+	var showErrorMessage = setDisplay('error', true)
+	var hideErrorMessage = setDisplay('error', false)
+
 	var articles = []
 	var currentArticleIndex = -1
 
-	loadArticleList(
-		function success(json) {
-			articles = json.articles
-			var latestArticle = findLatestArticle()
-			loadArticle(
-				latestArticle,
-				function success(html) {
-					currentArticleIndex = latestArticle.index
-					displayArticle(html)
-					enableFooterButtons()
-				},
-				handleError
-			)
-		},
-		handleError)
+	function tryLoadArticleList() {
+		hideContent()
+		hideErrorMessage()
+		showLoadingSpinner()
+		disableRetryButton()
+
+		loadArticleList(
+			function success(json) {
+				articles = json.articles
+				var latestArticle = findLatestArticle()
+
+				function tryLoadArticle() {
+					hideContent()
+					hideErrorMessage()
+					showLoadingSpinner()
+					disableRetryButton()
+
+					loadArticle(
+						latestArticle,
+						function success(html) {
+							currentArticleIndex = latestArticle.index
+
+							displayArticle(html)
+							hideLoadingSpinner()
+							showContent()
+							enableFooterButtons()
+						},
+						createErrorHandler(tryLoadArticle)
+					)
+				}
+
+				tryLoadArticle()
+			},
+			createErrorHandler(tryLoadArticleList))
+	}
+
+	tryLoadArticleList()
 
 	function parseFrenchDate(date) {
 		var parsed = new Date(Date.parse(date.split("/").reverse().join("-")))
@@ -67,8 +107,27 @@ title: Accueillir bébé
 		return load("articles.json", "json", successCallback, errorCallback)
 	}
 
-	function handleError(reason) {
-		console.error(reason)
+
+	function createErrorHandler(retryCallback) {
+		return function (reason) {
+			console.warn(reason)
+
+			hideContent()
+			hideLoadingSpinner()
+			showErrorMessage()
+
+			var previousButton = document.getElementById('previous')
+			previousButton.disabled = true
+
+			var nextButton = document.getElementById('next')
+			nextButton.disabled = true
+
+			var retryButton = document.getElementById('retry')
+			var retryButtonClone = retryButton.cloneNode(true)
+			retryButtonClone.addEventListener('click', retryCallback)
+			retryButtonClone.disabled = false
+			retryButton.parentNode.replaceChild(retryButtonClone, retryButton)
+		}
 	}
 
 	function findLatestArticle() {
@@ -110,12 +169,12 @@ title: Accueillir bébé
 	}
 
 	function displayArticle(html) {
-		var parent = document.getElementsByTagName('section')[0]
+		var contentSection = document.getElementById('content')
 		var startPos = html.indexOf('<article')
 		var endPos = html.indexOf('</article>')
 		if (startPos > -1 && endPos > -1) {
 			var content = html.substring(startPos, endPos + '</article>'.length)
-			parent.innerHTML = content
+			contentSection.innerHTML = content
 		}
 	}
 
@@ -130,8 +189,15 @@ title: Accueillir bébé
 			label = currentWeekNumber + ' semaine'
 		}
 
-		var parent = document.getElementsByTagName('header')[0]
-		parent.innerHTML = '<h2>' + label + '</h2>'
+		var header = document.getElementsByTagName('header')[0]
+		header.innerHTML = '<h2>' + label + '</h2>'
+	}
+
+	function setDisplay(elementId, isDisplayed) {
+		return function () {
+			var element = document.getElementById(elementId)
+			element.style.display = isDisplayed ? 'block' : 'none'
+		}
 	}
 
 	function enableFooterButtons() {
@@ -140,6 +206,11 @@ title: Accueillir bébé
 
 		var nextButton = document.getElementById('next')
 		nextButton.disabled = currentArticleIndex >= articles.length - 1
+	}
+
+	function disableRetryButton() {
+		var retryButton = document.getElementById('retry')
+		retryButton.disabled = true
 	}
 
 	var handlePreviousButton = createHandler(function (i) { return i - 1 })
@@ -152,15 +223,30 @@ title: Accueillir bébé
 		return function () {
 			var newIndex = updateIndex(currentArticleIndex)
 			var newArticle = articles[newIndex]
+
+			hideContent()
+			hideErrorMessage()
+			showLoadingSpinner()
+			disableRetryButton()
+
 			loadArticle(
 				newArticle,
 				function success(html) {
 					currentArticleIndex = newArticle.index
 					displayArticle(html)
+					hideLoadingSpinner()
+					showContent()
 					enableFooterButtons()
 				},
-				handleError
+				createErrorHandler(retryCallback)
 			)
+
+			function retryCallback() {
+				hideErrorMessage()
+				showContent()
+				enableFooterButtons()
+				disableRetryButton()
+			}
 		}
 	}
 
