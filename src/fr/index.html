@@ -4,7 +4,7 @@ title: Accueillir bébé
 
 <main>
 	<header></header>
-	<nav><a href="./menu">Menu</a></nav>
+	<nav><a href="./menu/">Menu</a></nav>
 	<section>Veuillez patienter...</section>
 	<footer>
 		<button id="previous" class="action secondary" disabled>Précédent</button>
@@ -17,7 +17,7 @@ title: Accueillir bébé
 	var dateOfBirth = Boolean(dateOfBirthInput) && (parseFrenchDate(dateOfBirthInput) || parseDate(dateOfBirthInput))
 
 	if (!dateOfBirth) {
-		window.location.assign('estimation-date-naissance')
+		window.location.assign('./estimation-date-naissance/')
 	}
 
 	var daysLeftUntilBirth = computeDaysBetween(dateOfBirth, new Date())

@@ -1,7 +1,7 @@
 {
 	"name": "nasko",
 	"version": "0.1.0",
-	"description": "Simple and pragmatic tips to welcome your future baby",
+	"description": "Simple tips to welcome your future baby",
 	"private": "true",
 	"scripts": {
 		"dev": "eleventy --serve",
