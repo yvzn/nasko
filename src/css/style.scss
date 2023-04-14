@@ -178,3 +178,10 @@ progress {
 #error {
 	display: none;
 }
+
+article {
+	h2 {
+		color: $accent1-color;
+		margin: 0 0 $space-1x 0;
+	}
+}

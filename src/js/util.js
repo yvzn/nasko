@@ -18,7 +18,7 @@ function getCookie(name) {
 function setCookie(name, value, expirationDate) {
 	var expires = expirationDate || "Fri, 31 Dec 9999 23:59:59 GMT"
 
-	document.cookie = name + "=" + value + "; path=/; expires=" + expires
+	document.cookie = name + "=" + value + "; path=/; expires=" + expires + "; SameSite=Strict"
 }
 
 function hasSearchParam(name) {

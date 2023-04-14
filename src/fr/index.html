@@ -1,5 +1,5 @@
 ---
-title: Accueillir bébé
+title: Conseils
 ---
 
 <main>
@@ -14,7 +14,8 @@ title: Accueillir bébé
 	<section id="error">
 		<img src="/assets/00112-1886873004.png" alt="" width="256" height="256" />
 		<h1>Erreur</h1>
-		<p>Cette page n'a pas pu être chargée...</p>
+		<p>Le contenu n'a pas pu être chargé...</p>
+		<p>Vérifiez votre accès réseau.</p>
 	</section>
 	<footer>
 		<button id="previous" class="action secondary" disabled>Précédent</button>
@@ -171,12 +172,20 @@ title: Accueillir bébé
 	}
 
 	function displayArticle(html) {
-		var contentSection = document.getElementById('content')
 		var startPos = html.indexOf('<article')
 		var endPos = html.indexOf('</article>')
 		if (startPos > -1 && endPos > -1) {
 			var content = html.substring(startPos, endPos + '</article>'.length)
+
+			var contentSection = document.getElementById('content')
 			contentSection.innerHTML = content
+		}
+
+		startPos = html.indexOf('<title>')
+		endPos = html.indexOf('</title>')
+		if (startPos > -1 && endPos > -1) {
+			var title = html.substring(startPos + '<title>'.length, endPos)
+			document.title = title
 		}
 	}
 
