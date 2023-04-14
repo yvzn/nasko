@@ -20,15 +20,18 @@ title: Utilisation des cookies
 </main>
 
 <script>
+	// eslint-disable-next-line no-undef
+	var setCookieFn = setCookie
+
 	function saveCookieConsent(submitEvent) {
 		if (submitEvent.submitter && submitEvent.submitter.value === "Accepter") {
-			setCookie("cookie-consent", true)
-			setCookie("cookie-consent-date", new Date().toString())
+			setCookieFn("cookie-consent", true)
+			setCookieFn("cookie-consent-date", new Date().toString())
 		} else {
 			var alreadyExpired = "Thu, 01 Jan 1970 00:00:00 GMT"
-			setCookie("cookie-consent", false, alreadyExpired)
-			setCookie("cookie-consent-date", undefined, alreadyExpired)
-			setCookie("date-of-birth", undefined, alreadyExpired)
+			setCookieFn("cookie-consent", false, alreadyExpired)
+			setCookieFn("cookie-consent-date", undefined, alreadyExpired)
+			setCookieFn("date-of-birth", undefined, alreadyExpired)
 		}
 	}
 

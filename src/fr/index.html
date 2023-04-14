@@ -24,6 +24,7 @@ title: Accueillir bébé
 </main>
 
 <script>
+	// eslint-disable-next-line no-undef
 	var dateOfBirthInput = getSearchParam("date-of-birth") || getCookie("date-of-birth")
 	var dateOfBirth = Boolean(dateOfBirthInput) && (parseFrenchDate(dateOfBirthInput) || parseDate(dateOfBirthInput))
 
@@ -34,53 +35,24 @@ title: Accueillir bébé
 	var daysLeftUntilBirth = computeDaysBetween(dateOfBirth, new Date())
 	displayCurrentWeekNumber(daysLeftUntilBirth)
 
-	var showContent = setDisplay('content', true)
-	var hideContent = setDisplay('content', false)
-	var showLoadingSpinner = setDisplay('loading', true)
-	var hideLoadingSpinner = setDisplay('loading', false)
-	var showErrorMessage = setDisplay('error', true)
-	var hideErrorMessage = setDisplay('error', false)
-
 	var articles = []
 	var currentArticleIndex = -1
 
-	function tryLoadArticleList() {
-		hideContent()
-		hideErrorMessage()
-		showLoadingSpinner()
-		disableRetryButton()
+	withRetry(
+		loadArticleList,
+		function success(json) {
+			articles = json.articles
+			var latestArticle = findLatestArticle()
 
-		loadArticleList(
-			function success(json) {
-				articles = json.articles
-				var latestArticle = findLatestArticle()
-
-				function tryLoadArticle() {
-					hideContent()
-					hideErrorMessage()
-					showLoadingSpinner()
-					disableRetryButton()
-
-					loadArticle(
-						latestArticle,
-						function success(html) {
-							currentArticleIndex = latestArticle.index
-
-							displayArticle(html)
-							hideLoadingSpinner()
-							showContent()
-							enableFooterButtons()
-						},
-						createErrorHandler(tryLoadArticle)
-					)
+			withRetry(
+				loadArticle(latestArticle),
+				function success(html) {
+					currentArticleIndex = latestArticle.index
+					displayArticle(html)
 				}
-
-				tryLoadArticle()
-			},
-			createErrorHandler(tryLoadArticleList))
-	}
-
-	tryLoadArticleList()
+			)
+		}
+	)
 
 	function parseFrenchDate(date) {
 		var parsed = new Date(Date.parse(date.split("/").reverse().join("-")))
@@ -103,10 +75,38 @@ title: Accueillir bébé
 		return Math.floor(millisecondsBetweenDates / millisecondsInDay)
 	}
 
-	function loadArticleList(successCallback, errorCallback) {
-		return load("articles.json", "json", successCallback, errorCallback)
-	}
+	function showContent() { setDisplay('content', true) }
+	function hideContent() { setDisplay('content', false) }
+	function showLoadingSpinner() { setDisplay('loading', true) }
+	function hideLoadingSpinner() { setDisplay('loading', false) }
+	function showErrorMessage() { setDisplay('error', true) }
+	function hideErrorMessage() { setDisplay('error', false) }
 
+	function withRetry(action, successCallback, retryCallback) {
+		function callAction() {
+			hideContent()
+			hideErrorMessage()
+			showLoadingSpinner()
+			disableRetryButton()
+
+			var errorHandler = createErrorHandler(retryCallback || callAction)
+
+			function successHandler() {
+				successCallback.apply(this, arguments)
+
+				hideLoadingSpinner()
+				showContent()
+				enableFooterButtons()
+			}
+
+			action(
+				successHandler,
+				errorHandler
+			)
+		}
+
+		callAction()
+	}
 
 	function createErrorHandler(retryCallback) {
 		return function (reason) {
@@ -116,11 +116,7 @@ title: Accueillir bébé
 			hideLoadingSpinner()
 			showErrorMessage()
 
-			var previousButton = document.getElementById('previous')
-			previousButton.disabled = true
-
-			var nextButton = document.getElementById('next')
-			nextButton.disabled = true
+			disableFooterButtons()
 
 			var retryButton = document.getElementById('retry')
 			var retryButtonClone = retryButton.cloneNode(true)
@@ -128,6 +124,10 @@ title: Accueillir bébé
 			retryButtonClone.disabled = false
 			retryButton.parentNode.replaceChild(retryButtonClone, retryButton)
 		}
+	}
+
+	function loadArticleList(successCallback, errorCallback) {
+		return load("articles.json", "json", successCallback, errorCallback)
 	}
 
 	function findLatestArticle() {
@@ -143,8 +143,10 @@ title: Accueillir bébé
 		return undefined
 	}
 
-	function loadArticle(article, successCallback, errorCallback) {
-		return load(article.url, "text", successCallback, errorCallback)
+	function loadArticle(article) {
+		return function (successCallback, errorCallback) {
+			return load(article.url, "text", successCallback, errorCallback)
+		}
 	}
 
 	function load(url, responseType, successCallback, errorCallback) {
@@ -152,7 +154,7 @@ title: Accueillir bébé
 		request.addEventListener("load", requestListener)
 		request.addEventListener("error", errorCallback)
 		request.addEventListener("timeout", errorCallback)
-		request.timeout = 1000
+		request.timeout = 5 * 1000
 		request.responseType = responseType
 		request.open("GET", url, true)
 		request.send()
@@ -194,10 +196,8 @@ title: Accueillir bébé
 	}
 
 	function setDisplay(elementId, isDisplayed) {
-		return function () {
-			var element = document.getElementById(elementId)
-			element.style.display = isDisplayed ? 'block' : 'none'
-		}
+		var element = document.getElementById(elementId)
+		element.style.display = isDisplayed ? 'block' : 'none'
 	}
 
 	function enableFooterButtons() {
@@ -208,48 +208,46 @@ title: Accueillir bébé
 		nextButton.disabled = currentArticleIndex >= articles.length - 1
 	}
 
+	function disableFooterButtons() {
+		var previousButton = document.getElementById('previous')
+		previousButton.disabled = true
+
+		var nextButton = document.getElementById('next')
+		nextButton.disabled = true
+	}
+
 	function disableRetryButton() {
 		var retryButton = document.getElementById('retry')
 		retryButton.disabled = true
 	}
 
-	var handlePreviousButton = createHandler(function (i) { return i - 1 })
+	var handlePreviousButton = createButtonHandler(function (i) { return i - 1 })
 	document.getElementById('previous').addEventListener('click', handlePreviousButton)
 
-	var handleNextButton = createHandler(function (i) { return i + 1 })
+	var handleNextButton = createButtonHandler(function (i) { return i + 1 })
 	document.getElementById('next').addEventListener('click', handleNextButton)
 
-	function createHandler(updateIndex) {
+	var handleResetLink = createButtonHandler(function () { return findLatestArticle().index })
+	document.getElementsByTagName('header')[0].addEventListener('click', handleResetLink)
+
+	function createButtonHandler(updateIndex) {
 		return function () {
 			var newIndex = updateIndex(currentArticleIndex)
 			var newArticle = articles[newIndex]
 
-			hideContent()
-			hideErrorMessage()
-			showLoadingSpinner()
-			disableRetryButton()
-
-			loadArticle(
-				newArticle,
+			withRetry(
+				loadArticle(newArticle),
 				function success(html) {
 					currentArticleIndex = newArticle.index
 					displayArticle(html)
-					hideLoadingSpinner()
+				},
+				function retry() {
+					hideErrorMessage()
 					showContent()
 					enableFooterButtons()
-				},
-				createErrorHandler(retryCallback)
+					disableRetryButton()
+				}
 			)
-
-			function retryCallback() {
-				hideErrorMessage()
-				showContent()
-				enableFooterButtons()
-				disableRetryButton()
-			}
 		}
 	}
-
-	var handleResetLink = createHandler(function () { return findLatestArticle().index })
-	document.getElementsByTagName('header')[0].addEventListener('click', handleResetLink)
 </script>

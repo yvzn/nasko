@@ -144,8 +144,12 @@ footer {
 	width: 100%;
 
 	.action {
-		&:nth-child(2), &:nth-child(3) {
+		&.primary {
 			float: right;
+		}
+
+		&.secondary {
+			float: left;
 		}
 
 		&[disabled] {
@@ -170,6 +174,7 @@ progress {
 	accent-color: $accent1-color;
 }
 
-#loading, #error {
+#loading,
+#error {
 	display: none;
 }
