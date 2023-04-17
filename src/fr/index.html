@@ -195,13 +195,13 @@ title: Conseils
 
 		var label = "Au départ"
 		if (currentWeekNumber > 1) {
-			label = currentWeekNumber + ' semaines'
+			label = currentWeekNumber + 'è semaine'
 		} else if (currentWeekNumber > 0) {
-			label = currentWeekNumber + ' semaine'
+			label = currentWeekNumber + 'ère semaine'
 		}
 
 		var header = document.getElementsByTagName('header')[0]
-		header.innerHTML = '<h2>' + label + '</h2>'
+		header.innerHTML = "<h2>C'est la " + label + '</h2>'
 	}
 
 	function setDisplay(elementId, isDisplayed) {
