@@ -52,6 +52,12 @@ section {
 	top: 50%;
 	text-align: center;
 	transform: translateY(-50%);
+
+	&#content {
+		max-height: 65%;
+		max-height: calc(100vh - 14rem);
+		overflow-y: auto;
+	}
 }
 
 form {
