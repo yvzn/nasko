@@ -30,7 +30,8 @@ title: Conseils
 	var dateOfBirth = Boolean(dateOfBirthInput) && (parseFrenchDate(dateOfBirthInput) || parseDate(dateOfBirthInput))
 
 	if (!dateOfBirth) {
-		window.location.assign('./estimation-date-naissance/')
+		dateOfBirth = new Date()
+		dateOfBirth.setDate(dateOfBirth.getDate() + 40 * 7)
 	}
 
 	var daysLeftUntilBirth = computeDaysBetween(dateOfBirth, new Date())
@@ -195,13 +196,13 @@ title: Conseils
 
 		var label = "Au départ"
 		if (currentWeekNumber > 1) {
-			label = currentWeekNumber + 'è semaine'
+			label = "<small>Aujourd'hui</small> " + currentWeekNumber + 'è semaine'
 		} else if (currentWeekNumber > 0) {
-			label = currentWeekNumber + 'ère semaine'
+			label = "<small>Aujourd'hui</small> " + currentWeekNumber + 'ère semaine'
 		}
 
 		var header = document.getElementsByTagName('header')[0]
-		header.innerHTML = "<h2>C'est la " + label + '</h2>'
+		header.innerHTML = "<h2>" + label + '</h2>'
 	}
 
 	function setDisplay(elementId, isDisplayed) {

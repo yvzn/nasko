@@ -44,6 +44,12 @@ h1 {
 h2 {
 	margin: 0;
 	color: $accent2-color;
+
+	small {
+		color: $gray-color;
+		display: block;
+		font-size: small;
+	}
 }
 
 section {

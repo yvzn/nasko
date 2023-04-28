@@ -10,10 +10,13 @@ title: Date de naissance
 
 			<label>
 				Saisir la date du terme estimée&nbsp;:
-				<input type="date" name="date-of-birth" id="date-of-birth" required placeholder="jour/mois/annee">
+				<input type="date" name="date-of-birth" id="date-of-birth" placeholder="jour/mois/annee">
 			</label>
+
+			<p>Elle peut être modifiée à tout moment depuis le menu principal.</p>
 		</section>
 		<footer>
+			<input type="submit" value="Plus tard" class="action secondary">
 			<input type="submit" value="Continuer" class="action primary">
 		</footer>
 	</form>
@@ -23,10 +26,14 @@ title: Date de naissance
 	// eslint-disable-next-line no-undef
 	var hasCookieConsent = hasCookie("cookie-consent", "true")
 
-	function saveDateOfBirth() {
-		if (hasCookieConsent) {
-			var dateOfBirth = document.getElementById("date-of-birth")
+	function saveDateOfBirth(submitEvent) {
+		var dateOfBirth = document.getElementById("date-of-birth")
 
+		if (submitEvent.submitter && submitEvent.submitter.value === "Plus tard") {
+			dateOfBirth.value = ''
+		}
+
+		if (hasCookieConsent) {
 			// eslint-disable-next-line no-undef
 			setCookie("date-of-birth", dateOfBirth.value)
 		}
@@ -34,4 +41,15 @@ title: Date de naissance
 
 	var form = document.getElementsByTagName("form")[0]
 	form.addEventListener("submit", saveDateOfBirth)
+
+	function initDateOfBirth() {
+		// eslint-disable-next-line no-undef
+		var dateOfBirth = getCookie("date-of-birth")
+
+		if (dateOfBirth && !isNaN(new Date(dateOfBirth))) {
+			document.getElementById("date-of-birth").value = dateOfBirth
+		}
+	}
+
+	addEventListener('load', initDateOfBirth);
 </script>
