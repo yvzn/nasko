@@ -196,4 +196,18 @@ article {
 		color: $accent1-color;
 		margin: 0 0 $space-1x 0;
 	}
+
+	&.dense {
+		text-align: left;
+
+		h2 {
+			text-align: center;
+		}
+
+		ul {
+			list-style-type: none;
+			padding: 0;
+			margin: $space-1x;
+		}
+	}
 }
