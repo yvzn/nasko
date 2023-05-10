@@ -1,0 +1,58 @@
+---
+title: Calcul du nombre de jours restants
+---
+
+<main>
+	<section>
+		<form id="days-left-form">
+			<h1>Nombre de jours restants</h1>
+			<article class="dense">
+				<label>
+					C'est la <input type="number" id="week" /><sup>è</sup> semaine
+				</label>
+				<label>
+					<acronym title="semaines de grossesse">SG</acronym> (âge) : <input type="number" id="sg" readonly />
+					semaine(s)
+				</label>
+				<label>
+					<acronym title="semaines d'aménorhée">SA</acronym> : <input type="number" id="sa" readonly />
+					semaine(s)
+				</label>
+				<label>
+					Jours restant : <input type="number" id="days-left" readonly /> jour(s)
+				</label>
+				<label>
+					Nombre total de semaines : <input type="number" id="total" value="40" /> semaines
+				</label>
+			</article>
+		</form>
+	</section>
+	<footer>
+		<button class="action primary" form="days-left-form">Calculer</button>
+	</footer>
+</main>
+
+<script>
+	function updateFormValues() {
+		var week = document.getElementById('week')
+		var sa = document.getElementById('sa')
+		var sg = document.getElementById('sg')
+		var daysLeft = document.getElementById('days-left')
+		var total = document.getElementById('total')
+		if (week.value && total.value) {
+			daysLeft.value = (total.value - week.value) * 7 + 7
+			sg.value = week.value - 1
+			sa.value = Number(sg.value) + 2
+		}
+	}
+	document.getElementsByTagName('form')[0].addEventListener('submit', function (e) {
+		e.preventDefault()
+		updateFormValues()
+	})
+	document.getElementsByTagName('button')[0].addEventListener('click', updateFormValues)
+	Array.prototype.forEach.call(document.getElementsByTagName('input'),
+		function (input) {
+			input.addEventListener('focus', function () { this.select() })
+			input.addEventListener('change', updateFormValues)
+		})
+</script>
