@@ -3,23 +3,25 @@ title: Date de naissance
 ---
 
 <main>
-	<form action="../">
-		<section>
+	<section>
+		<form action="../" id="date-of-birth-form">
 			<img src="/assets/calendar.png" alt="" width="256" height="256" />
 			<h1>Date de naissance</h1>
 
 			<label>
 				Saisir la date du terme estimée&nbsp;:
-				<input type="date" name="date-of-birth" id="date-of-birth" placeholder="jour/mois/annee">
+				<input type="date" name="date-of-birth" id="date-of-birth" required placeholder="jour/mois/annee">
 			</label>
 
 			<p>Elle peut être modifiée à tout moment depuis le menu principal.</p>
-		</section>
-		<footer>
+		</form>
+	</section>
+	<footer>
+		<form action="../">
 			<input type="submit" value="Plus tard" class="action secondary">
-			<input type="submit" value="Continuer" class="action primary">
-		</footer>
-	</form>
+		</form>
+		<input type="submit" value="Continuer" class="action primary" form="date-of-birth-form">
+	</footer>
 </main>
 
 <script>
