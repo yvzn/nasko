@@ -77,7 +77,7 @@ title: Conseils
 		return Math.floor(millisecondsBetweenDates / millisecondsInDay)
 	}
 
-	function showContent() { setDisplay('content', true) }
+	function showContent() { setDisplay('content', true); document.getElementById('content').scrollTop = 0 }
 	function hideContent() { setDisplay('content', false) }
 	function showLoadingSpinner() { setDisplay('loading', true) }
 	function hideLoadingSpinner() { setDisplay('loading', false) }
