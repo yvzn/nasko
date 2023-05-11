@@ -1,0 +1,16 @@
+---
+lang: fr
+title: Bienvenue
+layout: default.njk
+---
+
+{% set util_js %}
+{% include "../js/util.js" %}
+{% endset %}
+
+<script>
+{{ util_js | jsmin | safe }}
+</script>
+
+{{ content | safe }}
+

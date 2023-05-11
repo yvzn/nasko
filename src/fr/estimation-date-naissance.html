@@ -1,5 +1,6 @@
 ---
 title: Date de naissance
+layout: with-utils.njk
 ---
 
 <main>
@@ -41,8 +42,8 @@ title: Date de naissance
 		}
 	}
 
-	var form = document.getElementsByTagName("form")[0]
-	form.addEventListener("submit", saveDateOfBirth)
+	var forms = Array.prototype.slice.call(document.getElementsByTagName("form"))
+	forms.forEach(function (form) { form.addEventListener("submit", saveDateOfBirth) })
 
 	function initDateOfBirth() {
 		// eslint-disable-next-line no-undef

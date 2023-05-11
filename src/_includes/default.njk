@@ -1,16 +1,30 @@
 ---
 lang: fr
 title: Bienvenue
-layout: article.njk
+description:
 ---
 
-{% set util_js %}
-{% include "../js/util.js" %}
-{% endset %}
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	{% if description|length %}
+	<meta name="description" content="{{ description }}">
+	{% endif %}
+	<title>{{ title }} - À bientôt bébé !</title>
 
-<script>
-{{ util_js | jsmin | safe }}
-</script>
+	{# https://dev.to/masakudamatsu/favicon-nightmare-how-to-maintain-sanity-3al7 #}
+	<link rel="icon" href="/assets/favicon.ico" sizes="any">
+	<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+	<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png"/>
+	<link rel="manifest" href="/assets/site.webmanifest" />
+	<meta name="msapplication-TileColor" content="#f5f5f5">
+	<meta name="theme-color" content="#f5f5f5">
 
+	<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
 {{ content | safe }}
-
+</body>
+</html>

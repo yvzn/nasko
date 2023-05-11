@@ -1,5 +1,6 @@
 ---
 title: Conseils
+layout: with-utils.njk
 ---
 
 <main>
@@ -194,7 +195,7 @@ title: Conseils
 		var weeksLeft = Math.floor(daysLeft / 7)
 		var currentWeekNumber = 40 - weeksLeft
 
-		var label = "Au départ"
+		var label = ""
 		if (currentWeekNumber > 1) {
 			label = "<small>Aujourd'hui</small> " + currentWeekNumber + 'è semaine'
 		} else if (currentWeekNumber > 0) {
@@ -202,7 +203,7 @@ title: Conseils
 		}
 
 		var header = document.getElementsByTagName('header')[0]
-		header.innerHTML = "<h2>" + label + '</h2>'
+		header.innerHTML = '<h2>' + label + '</h2>'
 	}
 
 	function setDisplay(elementId, isDisplayed) {
