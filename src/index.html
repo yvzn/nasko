@@ -8,10 +8,14 @@ layout: with-utils.njk
 	<section>
 		<img src="/assets/crib.png" alt="" width="256" height="256" />
 		<h1>À bientôt bébé !</h1>
-		<p>Des conseils pour accompagner la grossesse<br>et préparer l'arrivée de bébé</p>
+		<p>Des conseils pour accompagner la grossesse<br>et préparer l'arrivée de bébé.</p>
+		<noscript>
+			<p>JavaScript semble désactivé&nbsp;: certaines fonctionnalités du site ne seront pas disponibles.</p>
+		</noscript>
 	</section>
 	<footer>
-		<a class="action primary" href="./fr/consentement-cookies/">Commencer</a>
+		<a id="sitemap" class="action primary" href="./fr/carte-du-site/">Commencer</a>
+		<a id="start" hidden class="action primary" href="./fr/consentement-cookies/">Commencer</a>
 	</footer>
 </main>
 
@@ -33,4 +37,10 @@ layout: with-utils.njk
 	if (homePage) {
 		window.location.assign(homePage)
 	}
+
+	// noscript users => go to sitemap, other users go to classic content
+	var sitemapLink = document.getElementById('sitemap')
+	sitemapLink.style.display = 'none'
+	var startLink = document.getElementById('start')
+	startLink.hidden = false
 </script>

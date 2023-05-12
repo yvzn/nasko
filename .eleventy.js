@@ -3,6 +3,7 @@ const sass = require("sass")
 
 module.exports = function (eleventyConfig) {
 	eleventyConfig.addNunjucksAsyncFilter("jsmin", jsmin)
+	eleventyConfig.addFilter("toWeekNumber", toWeekNumber)
 	eleventyConfig.addPassthroughCopy("src/assets")
 	eleventyConfig.addTemplateFormats("scss")
 
@@ -40,4 +41,10 @@ async function jsmin(code, callback) {
 		// Fail gracefully.
 		callback(null, code)
 	}
+}
+
+function toWeekNumber(daysLeft) {
+	var weeksLeft = Math.floor(daysLeft / 7)
+	var weekNumber = 40 - weeksLeft
+	return Math.max(weekNumber, 0)
 }

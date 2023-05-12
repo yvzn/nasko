@@ -1,3 +1,4 @@
 {
-	"tags": "article_francais"
+	"tags": "article_francais",
+	"layout": "article.njk"
 }

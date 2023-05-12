@@ -68,6 +68,13 @@ section {
 			transform: translateY(-52%);
 		}
 	}
+
+	&#sitemap {
+		max-height: 70%;
+		max-height: calc(100vh - 10rem);
+		overflow-y: auto;
+		transform: translateY(-40%);
+	}
 }
 
 form {
@@ -217,9 +224,13 @@ article {
 		}
 
 		ul {
-			list-style-type: none;
 			padding: 0;
 			margin: $space-1x;
 		}
 	}
+}
+
+li {
+	list-style-type: none;
+	margin: 0 0 $space-1x 0;
 }

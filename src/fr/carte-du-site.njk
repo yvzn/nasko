@@ -1,0 +1,33 @@
+---
+title: Carte du site
+---
+
+<main>
+	<header>
+		<h1>Carte du site</h1>
+	</header>
+	<nav>
+		<a href="../menu/">Menu</a>
+	</nav>
+	<section id="sitemap">
+		<img src="/assets/map.png" alt="" width="256" height="256"/>
+		<h2>Tous les articles</h2>
+		<article class="dense">
+			<ul>
+				{% set previousWeekNumber = "" %}
+				{% for item in collections.articlesFrancaisTries %}
+					{% set weekNumber = item.data.daysLeft | toWeekNumber %}
+					{% if weekNumber != previousWeekNumber %}
+					</ul>
+					<h2>Semaine {{ weekNumber }}</h2>
+					<ul>
+						{% set previousWeekNumber = weekNumber %}
+					{% endif %}
+					<li>
+						<a href="{{ item.url | url }}">{{ item.data.title }}</a>&nbsp;: {{ item.data.description }}
+					</li>
+				{% endfor %}
+			</ul>
+		</article>
+	</section>
+</main>

@@ -2,12 +2,13 @@
 permalink: fr/articles.json
 layout: blank
 ---
+
 {
-	"articles": [ {% for item in collections.articlesFrancaisTries %}
-		{
-			"url": "{{ item.url }}",
-			"daysLeft": {{ item.data.daysLeft }},
-			"index": {{loop.index0}}
-		}{% if not loop.last %},{% endif %}{% endfor %}
-	]
+	"articles": [{% for item in collections.articlesFrancaisTries %}
+			{
+				"url": "{{ item.url | url }}",
+				"daysLeft": {{ item.data.daysLeft }},
+				"index": {{ loop.index0 }}
+			}
+			{% if not loop.last %},{% endif %}{% endfor %}]
 }

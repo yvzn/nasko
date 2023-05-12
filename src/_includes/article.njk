@@ -1,0 +1,25 @@
+---
+lang: fr
+title: Conseils
+layout: default.njk
+---
+
+<main>
+	<header></header>
+	<nav>
+		<a href="../../menu/">Menu</a>
+	</nav>
+	<section id="content">
+		{{ content | safe }}
+	</section>
+	<footer>
+		{% set previous = collections.articlesFrancaisTries | getPreviousCollectionItem %}
+		{% if previous %}
+			<a href="{{ previous.url | url }}"  class="action secondary">Précédent</a>
+		{% endif %}
+		{% set next = collections.articlesFrancaisTries | getNextCollectionItem %}
+		{% if next %}
+			<a href="{{ next.url | url }}" class="action primary">Suivant</a>
+		{% endif %}
+	</footer>
+</main>
