@@ -4,24 +4,26 @@ layout: with-utils.njk
 ---
 
 <main>
-	<header></header>
+	<header>
+		<h2 hidden><a id="reset-link" href="javascript:"><small>Aujourd'hui</small></a></h2>
+	</header>
 	<nav><a href="./menu/">Menu</a></nav>
 	<section id="content">
 		<progress>Chargement...</progress>
 	</section>
-	<section id="loading">
+	<section id="loading" hidden>
 		<progress>Chargement...</progress>
 	</section>
-	<section id="error">
+	<section id="error" hidden>
 		<img src="/assets/corgi.png" alt="" width="256" height="256" />
 		<h1>Erreur</h1>
 		<p>Le contenu n'a pas pu être chargé...</p>
 		<p>Vérifiez votre accès internet.</p>
 	</section>
 	<footer>
-		<button id="previous" class="action secondary" disabled>Précédent</button>
-		<button id="next" class="action primary" disabled>Suivant</button>
-		<button id="retry" class="action primary" disabled>Réessayer</button>
+		<button id="previous" class="action secondary" type="button" disabled>Précédent</button>
+		<button id="next" class="action primary" type="button" disabled>Suivant</button>
+		<button id="retry" class="action primary" type="button" disabled>Réessayer</button>
 	</footer>
 </main>
 
@@ -195,20 +197,31 @@ layout: with-utils.njk
 		var weeksLeft = Math.floor(daysLeft / 7)
 		var currentWeekNumber = 40 - weeksLeft
 
-		var label = ""
-		if (currentWeekNumber > 1) {
-			label = "<small>Aujourd'hui</small> " + currentWeekNumber + 'è semaine'
-		} else if (currentWeekNumber > 0) {
-			label = "<small>Aujourd'hui</small> " + currentWeekNumber + 'ère semaine'
+		if (currentWeekNumber < 1) {
+			return
 		}
 
-		var header = document.getElementsByTagName('header')[0]
-		header.innerHTML = '<h2>' + label + '</h2>'
+		var label = ""
+		if (currentWeekNumber > 1) {
+			label = " " + currentWeekNumber + 'è semaine'
+		} else {
+			label = " " + currentWeekNumber + 'ère semaine'
+		}
+
+		var resetLink = document.getElementById('reset-link')
+		var handleResetLink = createButtonHandler(function () { return findLatestArticle().index })
+		resetLink.addEventListener('click', handleResetLink)
+
+		label = document.createTextNode(label)
+		resetLink.appendChild(label)
+
+		var heading = document.getElementsByTagName('h2')[0]
+		heading.hidden = false
 	}
 
 	function setDisplay(elementId, isDisplayed) {
 		var element = document.getElementById(elementId)
-		element.style.display = isDisplayed ? 'block' : 'none'
+		element.hidden = !isDisplayed
 	}
 
 	function enableFooterButtons() {
@@ -237,9 +250,6 @@ layout: with-utils.njk
 
 	var handleNextButton = createButtonHandler(function (i) { return i + 1 })
 	document.getElementById('next').addEventListener('click', handleNextButton)
-
-	var handleResetLink = createButtonHandler(function () { return findLatestArticle().index })
-	document.getElementsByTagName('header')[0].addEventListener('click', handleResetLink)
 
 	function createButtonHandler(updateIndex) {
 		return function () {

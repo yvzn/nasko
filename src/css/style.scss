@@ -155,6 +155,15 @@ input {
 header {
 	padding: $space-1x;
 	position: absolute;
+
+	h2 a {
+		color: inherit;
+		text-decoration: none;
+
+		small {
+			text-decoration: underline;
+		}
+	}
 }
 
 nav {
@@ -165,6 +174,7 @@ nav {
 
 a {
 	color: $gray-color;
+	outline-offset: .75rem;
 }
 
 footer {
@@ -203,11 +213,6 @@ footer {
 
 progress {
 	accent-color: $accent1-color;
-}
-
-#loading,
-#error {
-	display: none;
 }
 
 article {
