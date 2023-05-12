@@ -47,7 +47,16 @@ layout: with-utils.njk
 		loadArticleList,
 		function success(json) {
 			articles = json.articles
-			var latestArticle = findLatestArticle()
+
+			var daysLeft = daysLeftUntilBirth
+
+			// eslint-disable-next-line no-undef
+			var daysLeftParameter = Number(getSearchParam('days-left'))
+			if (!isNaN(daysLeftParameter)) {
+				daysLeft = daysLeftParameter
+			}
+
+			var latestArticle = findLatestArticle(daysLeft)
 
 			withRetry(
 				loadArticle(latestArticle),
@@ -135,9 +144,9 @@ layout: with-utils.njk
 		return load("articles.json", "json", successCallback, errorCallback)
 	}
 
-	function findLatestArticle() {
+	function findLatestArticle(minimumDaysLeft) {
 		var latestArticle = { url: undefined, daysLeft: Number.POSITIVE_INFINITY, index: -1 }
-		for (var i = 0; i < articles.length && daysLeftUntilBirth <= articles[i].daysLeft; ++i) {
+		for (var i = 0; i < articles.length && minimumDaysLeft <= articles[i].daysLeft; ++i) {
 			if (articles[i].daysLeft <= latestArticle.daysLeft) {
 				latestArticle = articles[i]
 			}
@@ -209,7 +218,7 @@ layout: with-utils.njk
 		}
 
 		var resetLink = document.getElementById('reset-link')
-		var handleResetLink = createButtonHandler(function () { return findLatestArticle().index })
+		var handleResetLink = createButtonHandler(function () { return findLatestArticle(daysLeftUntilBirth).index })
 		resetLink.addEventListener('click', handleResetLink)
 
 		label = document.createTextNode(label)
@@ -261,6 +270,17 @@ layout: with-utils.njk
 				function success(html) {
 					currentArticleIndex = newArticle.index
 					displayArticle(html)
+
+					// eslint-disable-next-line no-undef
+					var dateOfBirthParam = getSearchParam("date-of-birth") || ''
+					if (dateOfBirthParam) {
+						dateOfBirthParam = 'date-of-birth=' + dateOfBirthParam + '&'
+					}
+
+					history.pushState(
+						{ daysLeft: newArticle.daysLeft },
+						'',
+						'?' + dateOfBirthParam + 'days-left=' + newArticle.daysLeft)
 				},
 				function retry() {
 					hideErrorMessage()
@@ -270,5 +290,27 @@ layout: with-utils.njk
 				}
 			)
 		}
+	}
+
+	window.addEventListener('popstate', handleNavigation)
+
+	function handleNavigation(event) {
+		var daysLeft = event.state ? event.state.daysLeft : daysLeftUntilBirth
+
+		var latestArticle = findLatestArticle(daysLeft)
+
+		withRetry(
+			loadArticle(latestArticle),
+			function success(html) {
+				currentArticleIndex = latestArticle.index
+				displayArticle(html)
+			},
+			function retry() {
+				hideErrorMessage()
+				showContent()
+				enableFooterButtons()
+				disableRetryButton()
+			}
+		)
 	}
 </script>
