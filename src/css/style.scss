@@ -184,6 +184,10 @@ nav {
 a {
 	color: $light-dimmed-color;
 	outline-offset: .75rem;
+
+	article & {
+		outline-offset: 0;
+	}
 }
 
 footer {

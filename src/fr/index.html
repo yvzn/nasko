@@ -90,7 +90,16 @@ layout: with-utils.njk
 		return Math.floor(millisecondsBetweenDates / millisecondsInDay)
 	}
 
-	function showContent() { setDisplay('content', true); document.getElementById('content').scrollTop = 0 }
+	function showContent() {
+		setDisplay('content', true)
+		document.getElementById('content').scrollTop = 0
+		var heading = document.querySelector && document.querySelector('#content h2')
+		if (heading) {
+			// https://developer.chrome.com/docs/lighthouse/accessibility/managed-focus/
+			heading.tabIndex = -1
+			heading.focus()
+		}
+	}
 	function hideContent() { setDisplay('content', false) }
 	function showLoadingSpinner() { setDisplay('loading', true) }
 	function hideLoadingSpinner() { setDisplay('loading', false) }
