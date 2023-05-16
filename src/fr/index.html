@@ -5,16 +5,17 @@ layout: with-utils.njk
 
 <main>
 	<header>
-		<h2 hidden><a id="reset-link" href="javascript:"><small>Aujourd'hui</small></a></h2>
+		<h2 id="reset-heading" hidden class="hidden"><a id="reset-link"
+				href="javascript:"><small>Aujourd'hui</small></a></h2>
 	</header>
 	<nav><a href="./menu/">Menu</a></nav>
 	<section id="content">
 		<progress>Chargement...</progress>
 	</section>
-	<section id="loading" hidden>
+	<section id="loading" hidden class="hidden">
 		<progress>Chargement...</progress>
 	</section>
-	<section id="error" hidden>
+	<section id="error" hidden class="hidden">
 		<img src="/assets/corgi.png" alt="" width="256" height="256" />
 		<h1>Erreur</h1>
 		<p>Le contenu n'a pas pu être chargé...</p>
@@ -224,13 +225,13 @@ layout: with-utils.njk
 		label = document.createTextNode(label)
 		resetLink.appendChild(label)
 
-		var heading = document.getElementsByTagName('h2')[0]
-		heading.hidden = false
+		setDisplay('reset-heading', true)
 	}
 
 	function setDisplay(elementId, isDisplayed) {
 		var element = document.getElementById(elementId)
 		element.hidden = !isDisplayed
+		element.style.display = element.hidden ? 'none' : 'block'
 	}
 
 	function enableFooterButtons() {

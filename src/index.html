@@ -15,32 +15,25 @@ layout: with-utils.njk
 	</section>
 	<footer>
 		<a id="sitemap" class="action primary" href="./fr/carte-du-site/">Commencer</a>
-		<a id="start" hidden class="action primary" href="./fr/consentement-cookies/">Commencer</a>
+		<a id="start" hidden class="action primary hidden" href="./fr/consentement-cookies/">Commencer</a>
+		<a id="continue" hidden class="action primary hidden" href="./fr/">Continuer</a>
 	</footer>
 </main>
 
 <script>
 	// eslint-disable-next-line no-undef
 	var hasCookieConsent = hasCookie("cookie-consent", "true")
-	// eslint-disable-next-line no-undef
-	var hasDateOfBirth = hasCookie("date-of-birth")
 
-	var homePage = undefined
-	if (hasCookieConsent) {
-		if (hasDateOfBirth) {
-			homePage = 'fr/'
-		} else {
-			homePage = 'fr/estimation-date-naissance/'
-		}
-	}
-
-	if (homePage) {
-		window.location.assign(homePage)
-	}
-
-	// noscript users => go to sitemap, other users go to classic content
 	var sitemapLink = document.getElementById('sitemap')
-	sitemapLink.hidden = true
 	var startLink = document.getElementById('start')
-	startLink.hidden = false
+	var continueLink = document.getElementById('continue')
+
+	setDisplay(sitemapLink, false) // only for noscript users
+	setDisplay(startLink, !hasCookieConsent)
+	setDisplay(continueLink, hasCookieConsent)
+
+	function setDisplay(element, isDisplayed) {
+		element.hidden = !isDisplayed
+		element.style.display = element.hidden ? 'none' : 'block'
+	}
 </script>
