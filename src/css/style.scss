@@ -80,7 +80,7 @@ section {
 
 	&#sitemap {
 		max-height: 70%;
-		max-height: calc(100vh - 10rem);
+		max-height: calc(100vh - 11rem);
 		overflow-y: auto;
 		transform: translateY(-40%);
 	}
@@ -220,7 +220,6 @@ footer {
 
 	li {
 		list-style-type: none;
-		margin: 0 0 $space-1x 0;
 	}
 }
 
@@ -245,11 +244,34 @@ article {
 			padding: 0;
 			margin: $space-1x;
 		}
+
+		img {
+			display: block;
+			margin: auto;
+		}
+	}
+
+	li {
+		list-style-type: '\2713\0020';
+		margin: 0 0 $space-1x $space-1x;
+
+		&::marker {
+			content: '\2713\0020';
+			color: $light-accent1-color;
+		}
+	}
+
+	form li {
+		list-style-type: none;
+		margin: 0 0 $space-1x 0;
+
+		&::marker {
+			content: ''
+		}
 	}
 }
 
 li {
-	list-style-type: none;
 	margin: 0 0 $space-1x 0;
 }
 
@@ -330,6 +352,12 @@ a.hidden {
 	article {
 		h2 {
 			color: $dark-accent1-color;
+		}
+
+		li {
+			&::marker {
+				color: $dark-accent1-color;
+			}
 		}
 	}
 
