@@ -6,13 +6,17 @@ title: Menu
 	<header>
 		<h2>Menu</h2>
 	</header>
-	<nav><a id="back" href="../estimation-date-naissance/">Fermer</a></nav>
+	<nav><a id="back" href="../carte-du-site/">Fermer</a></nav>
 	<section>
 		<ul>
-			<li><a href="../estimation-date-naissance/">Changer la date de naissance estimée 📅</a></li>
-			<li><a href="../consentement-cookies/">Gestion des cookies 🍪</a></li>
+			<li><a href="/">Accueil 🏠</a></li>
+			<li hidden class="hidden"><a href="../estimation-date-naissance/">Changer la date de naissance estimée 📅</a></li>
+			<li hidden class="hidden"><a href="../consentement-cookies/">Gestion des cookies 🍪</a></li>
 			<li><a href="../carte-du-site/">Carte du site 🗺&#xFE0F;</a></li>
 		</ul>
+		<noscript>
+			<p>JavaScript semble désactivé&nbsp;: certaines fonctionnalités du site ne seront pas disponibles.</p>
+		</noscript>
 	</section>
 </main>
 
@@ -24,4 +28,10 @@ title: Menu
 
 	var back = document.getElementById("back")
 	back.addEventListener("click", goBack)
+
+	var listItems = document.getElementsByTagName('li');
+	for(var index = 0; index < listItems.length; ++index) {
+		listItems[index].hidden = false;
+		listItems[index].style.display = 'list-item';
+	}
 </script>
