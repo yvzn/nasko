@@ -1,6 +1,6 @@
 ---
 title: Conseils
-layout: with-utils.njk
+layout: with-http.njk
 ---
 
 <main>
@@ -30,6 +30,9 @@ layout: with-utils.njk
 
 <script>
 	// eslint-disable-next-line no-undef
+	var load = http.get
+
+	// eslint-disable-next-line no-undef
 	var dateOfBirthInput = getSearchParam("date-of-birth") || getCookie("date-of-birth")
 	var dateOfBirth = Boolean(dateOfBirthInput) && (parseFrenchDate(dateOfBirthInput) || parseDate(dateOfBirthInput))
 
@@ -44,7 +47,7 @@ layout: with-utils.njk
 	var articles = []
 	var currentArticleIndex = -1
 
-	withRetry(
+	callActionWithRetry(
 		loadArticleList,
 		function success(json) {
 			articles = json.articles
@@ -59,7 +62,7 @@ layout: with-utils.njk
 
 			var latestArticle = findLatestArticle(daysLeft)
 
-			withRetry(
+			callActionWithRetry(
 				loadArticle(latestArticle),
 				function success(html) {
 					currentArticleIndex = latestArticle.index
@@ -106,7 +109,7 @@ layout: with-utils.njk
 	function showErrorMessage() { setDisplay('error', true) }
 	function hideErrorMessage() { setDisplay('error', false) }
 
-	function withRetry(action, successCallback, retryCallback) {
+	function callActionWithRetry(action, successCallback, retryCallback) {
 		function callAction() {
 			hideContent()
 			hideErrorMessage()
@@ -170,27 +173,6 @@ layout: with-utils.njk
 	function loadArticle(article) {
 		return function (successCallback, errorCallback) {
 			return load(article.url, "text", successCallback, errorCallback)
-		}
-	}
-
-	function load(url, responseType, successCallback, errorCallback) {
-		var request = new XMLHttpRequest()
-		request.addEventListener("load", requestListener)
-		request.addEventListener("error", errorCallback)
-		request.addEventListener("timeout", errorCallback)
-		request.timeout = 5 * 1000
-		request.responseType = responseType
-		request.open("GET", url, true)
-		request.send()
-
-		function requestListener() {
-			if (request.readyState === 4) {
-				if (request.status === 200) {
-					successCallback(request.response)
-				} else {
-					errorCallback(request.statusText)
-				}
-			}
 		}
 	}
 
@@ -275,7 +257,7 @@ layout: with-utils.njk
 			var newIndex = updateIndex(currentArticleIndex)
 			var newArticle = articles[newIndex]
 
-			withRetry(
+			callActionWithRetry(
 				loadArticle(newArticle),
 				function success(html) {
 					currentArticleIndex = newArticle.index
@@ -309,7 +291,7 @@ layout: with-utils.njk
 
 		var latestArticle = findLatestArticle(daysLeft)
 
-		withRetry(
+		callActionWithRetry(
 			loadArticle(latestArticle),
 			function success(html) {
 				currentArticleIndex = latestArticle.index

@@ -1,0 +1,20 @@
+---
+lang: fr
+title: Bienvenue
+layout: default.njk
+---
+
+{% set http_js %}
+{% include "../js/http.js" %}
+{% endset %}
+
+{% set util_js %}
+{% include "../js/util.js" %}
+{% endset %}
+
+<script>
+{{ util_js | jsmin | safe }}
+{{ http_js | jsmin | safe }}
+</script>
+
+{{ content | safe }}
