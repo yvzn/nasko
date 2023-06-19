@@ -123,6 +123,13 @@ form {
 	}
 }
 
+@media (min-width: 360px) {
+	img[height="128"][width="128"] {
+		height: 192px;
+		width: 192px;
+	}
+}
+
 p {
 	margin: 0 0 $space-1x 0;
 }
