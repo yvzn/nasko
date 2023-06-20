@@ -36,4 +36,26 @@ layout: with-utils.njk
 		element.hidden = !isDisplayed
 		element.style.display = element.hidden ? 'none' : 'inline-block'
 	}
+
+	function isServiceWorkerSupported() {
+		try {
+			return Boolean("serviceWorker" in navigator)
+		} catch (e) {
+			return false
+		}
+	}
+
+	function registerServiceWorker() {
+		if (isServiceWorkerSupported()) {
+			try {
+				navigator.serviceWorker.register("/service-worker.js")
+			} catch (error) {
+				console.error(error);
+			}
+		}
+	}
+
+	window.addEventListener('load', function() {
+		registerServiceWorker()
+	});
 </script>

@@ -5,6 +5,7 @@ module.exports = function (eleventyConfig) {
 	eleventyConfig.addNunjucksAsyncFilter("jsmin", jsmin)
 	eleventyConfig.addFilter("toWeekNumber", toWeekNumber)
 	eleventyConfig.addPassthroughCopy("src/assets")
+	eleventyConfig.addPassthroughCopy("src/service-worker.js")
 	eleventyConfig.addTemplateFormats("scss")
 
 	eleventyConfig.addExtension("scss", {

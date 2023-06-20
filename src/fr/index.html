@@ -16,10 +16,10 @@ layout: with-http.njk
 		<progress>Chargement...</progress>
 	</section>
 	<section id="error" hidden class="hidden">
-		<img src="/assets/hi-res/corgi.png" alt="" width='128' height='128' />
+		<img src="/assets/hi-res/corgi.png" alt="Petit chien triste et déçu" width='128' height='128' />
 		<h1>Erreur</h1>
-		<p>Le contenu n'a pas pu être chargé...</p>
-		<p>Vérifiez votre accès internet.</p>
+		<p>Le contenu n'a pas pu être chargé.</p>
+		<p>Vérifiez votre accès au réseau internet.</p>
 	</section>
 	<footer>
 		<button id="previous" class="action secondary" type="button" disabled>Précédent</button>
@@ -30,7 +30,7 @@ layout: with-http.njk
 
 <script>
 	// eslint-disable-next-line no-undef
-	var load = http.get
+	var httpGet = http.get
 
 	// eslint-disable-next-line no-undef
 	var dateOfBirthInput = getSearchParam("date-of-birth") || getCookie("date-of-birth")
@@ -154,7 +154,7 @@ layout: with-http.njk
 	}
 
 	function loadArticleList(successCallback, errorCallback) {
-		return load("articles.json", "json", successCallback, errorCallback)
+		return httpGet("articles.json", "json", successCallback, errorCallback)
 	}
 
 	function findLatestArticle(minimumDaysLeft) {
@@ -172,7 +172,7 @@ layout: with-http.njk
 
 	function loadArticle(article) {
 		return function (successCallback, errorCallback) {
-			return load(article.url, "text", successCallback, errorCallback)
+			return httpGet(article.url, "text", successCallback, errorCallback)
 		}
 	}
 
