@@ -1,9 +1,11 @@
+var REQUEST_TIMEOUT = 10 * 1000
+
 function xhrGet(url, responseType, successCallback, errorCallback) {
 	var request = new XMLHttpRequest()
 	request.addEventListener("load", requestListener)
 	request.addEventListener("error", errorCallback)
 	request.addEventListener("timeout", errorCallback)
-	request.timeout = 5 * 1000
+	request.timeout = REQUEST_TIMEOUT
 	request.responseType = responseType
 	request.open("GET", url, true)
 	request.send()
@@ -30,7 +32,7 @@ function isFetchSupported() {
 function fetchGet(url, responseType, successCallback, errorCallback) {
 	var controller = new AbortController()
 
-	var timeout = setTimeout(function () { controller.abort() }, 5 * 1000)
+	var timeout = setTimeout(function () { controller.abort() }, REQUEST_TIMEOUT)
 
 	fetch(url, { signal: controller.signal })
 		.then(function (response) {

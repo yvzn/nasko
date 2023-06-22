@@ -3,7 +3,16 @@
 		"browser": true
 	},
 	"extends": "eslint:recommended",
-	"overrides": [],
+	"overrides": [
+		{
+			"files": [
+				"src/service-worker.js"
+			],
+			"parserOptions": {
+				"ecmaVersion": 2017
+			}
+		}
+	],
 	"parserOptions": {
 		"ecmaVersion": 5
 	},

@@ -12,6 +12,21 @@ title: Erreur accès réseau
 		</article>
 	</section>
 	<footer>
-		<a class="action primary" href="/">Accueil</a>
+		<form action="/">
+			<input type="submit" value="Accueil" class="action secondary">
+		</form>
+		<form>
+			<input type="submit" id="retry" value="Réessayer" class="action primary">
+		</form>
 	</footer>
 </main>
+
+<script>
+	function retry(event) {
+		event.preventDefault()
+		window.location.reload()
+	}
+
+	var retryButton = document.getElementById('retry')
+	retryButton.addEventListener('click', retry)
+</script>
