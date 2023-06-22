@@ -5,8 +5,10 @@ layout: with-http.njk
 
 <main>
 	<header>
-		<h2 id="reset-heading" hidden class="hidden"><a id="reset-link"
-				href="javascript:"><small>Aujourd'hui</small></a></h2>
+		<a id="reset-link" href="javascript:">
+			<h3 id="latest-week-number" hidden class="hidden"><span>Aujourd'hui&nbsp;:</span></h3>
+			<h2 id="current-week-number" hidden class="hidden"></h2>
+		</a>
 	</header>
 	<nav><a href="./menu/">Menu</a></nav>
 	<section id="content">
@@ -42,7 +44,7 @@ layout: with-http.njk
 	}
 
 	var daysLeftUntilBirth = computeDaysBetween(dateOfBirth, new Date())
-	displayCurrentWeekNumber(daysLeftUntilBirth)
+	displayLatestWeekNumber(daysLeftUntilBirth)
 
 	var articles = []
 	var currentArticleIndex = -1
@@ -67,6 +69,7 @@ layout: with-http.njk
 				function success(html) {
 					currentArticleIndex = latestArticle.index
 					displayArticle(html)
+					displayCurrentWeekNumber(latestArticle.daysLeft)
 				}
 			)
 		}
@@ -194,7 +197,42 @@ layout: with-http.njk
 		}
 	}
 
+	function displayLatestWeekNumber(daysLeft) {
+		var label = computeWeekLabel(daysLeft)
+		if (!label) {
+			return
+		}
+
+		var resetLink = document.getElementById('reset-link')
+		var handleResetLink = createButtonHandler(function () { return findLatestArticle(daysLeftUntilBirth).index })
+		resetLink.addEventListener('click', handleResetLink)
+		resetLink.title = 'Réinitialiser'
+
+		var latestWeekNumberHeading = document.getElementById('latest-week-number')
+		label = document.createTextNode(label)
+		latestWeekNumberHeading.appendChild(label)
+
+		setDisplay('latest-week-number', true)
+	}
+
 	function displayCurrentWeekNumber(daysLeft) {
+		var label = computeWeekLabel(daysLeft)
+
+		if (!label) {
+			setDisplay('current-week-number', false)
+			return
+		}
+
+		var currentWeekNumberHeading = document.getElementById('current-week-number')
+		currentWeekNumberHeading.innerText = ''
+
+		label = document.createTextNode(label)
+		currentWeekNumberHeading.appendChild(label)
+
+		setDisplay('current-week-number', true)
+	}
+
+	function computeWeekLabel(daysLeft) {
 		var weeksLeft = Math.floor(daysLeft / 7)
 		var currentWeekNumber = 40 - weeksLeft
 
@@ -209,14 +247,7 @@ layout: with-http.njk
 			label = " " + currentWeekNumber + 'ère semaine'
 		}
 
-		var resetLink = document.getElementById('reset-link')
-		var handleResetLink = createButtonHandler(function () { return findLatestArticle(daysLeftUntilBirth).index })
-		resetLink.addEventListener('click', handleResetLink)
-
-		label = document.createTextNode(label)
-		resetLink.appendChild(label)
-
-		setDisplay('reset-heading', true)
+		return label
 	}
 
 	function setDisplay(elementId, isDisplayed) {
@@ -262,6 +293,7 @@ layout: with-http.njk
 				function success(html) {
 					currentArticleIndex = newArticle.index
 					displayArticle(html)
+					displayCurrentWeekNumber(newArticle.daysLeft)
 
 					// eslint-disable-next-line no-undef
 					var dateOfBirthParam = getSearchParam("date-of-birth") || ''
@@ -296,6 +328,7 @@ layout: with-http.njk
 			function success(html) {
 				currentArticleIndex = latestArticle.index
 				displayArticle(html)
+				displayCurrentWeekNumber(latestArticle.daysLeft)
 			},
 			function retry() {
 				hideErrorMessage()

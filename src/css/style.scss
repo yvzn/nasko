@@ -55,12 +55,6 @@ h1 {
 h2 {
 	margin: 0;
 	color: $light-accent2-color;
-
-	small {
-		color: $light-dimmed-color;
-		display: block;
-		font-size: small;
-	}
 }
 
 section {
@@ -159,13 +153,20 @@ input {
 header {
 	padding: $space-1x;
 
-	h2 a {
+	a {
 		color: inherit;
 		text-decoration: none;
+	}
 
-		small {
-			text-decoration: underline;
-		}
+	h2 {
+		text-decoration: none;
+	}
+
+	h3 {
+		color: $light-dimmed-color;
+		margin: 0;
+		font-size: small;
+		text-decoration: underline;
 	}
 }
 
@@ -283,12 +284,10 @@ a.hidden {
 	}
 
 	h1 {
-		margin: 0 0 $space-1x 0;
 		color: $dark-accent2-color;
 	}
 
 	h2 {
-		margin: 0;
 		color: $dark-accent2-color;
 
 		small {
@@ -330,6 +329,12 @@ a.hidden {
 
 		section#content & {
 			accent-color: $dark-accent2-color;
+		}
+	}
+
+	header {
+		h3 {
+			color: $dark-dimmed-color;
 		}
 	}
 

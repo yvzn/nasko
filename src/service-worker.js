@@ -46,7 +46,6 @@ const cacheFirst = async ({ request, preloadResponsePromise, fallbackUrl }) => {
 	// Next try to use (and cache) the preloaded response, if it's there
 	const preloadResponse = await preloadResponsePromise
 	if (preloadResponse) {
-		console.info("using preload response", preloadResponse)
 		putInCache(request, preloadResponse.clone())
 		return preloadResponse
 	}
