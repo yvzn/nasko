@@ -36,21 +36,21 @@ const refreshCacheFromNetwork = async (request) => {
 }
 
 const cacheFirst = async ({ request, preloadResponsePromise, fallbackUrl }) => {
-	// First try to get the resource from the cache
-	const responseFromCache = await caches.match(request, { ignoreSearch: true })
-	if (responseFromCache) {
-		refreshCacheFromNetwork(request)
-		return responseFromCache
-	}
-
-	// Next try to use (and cache) the preloaded response, if it's there
+	// try to use (and cache) the preloaded response, if it's there
 	const preloadResponse = await preloadResponsePromise
 	if (preloadResponse) {
 		putInCache(request, preloadResponse.clone())
 		return preloadResponse
 	}
 
-	// Next try to get the resource from the network
+	// try to get the resource from the cache
+	const responseFromCache = await caches.match(request, { ignoreSearch: true })
+	if (responseFromCache) {
+		refreshCacheFromNetwork(request)
+		return responseFromCache
+	}
+
+	// try to get the resource from the network
 	try {
 		const responseFromNetwork = await fetchWithTimeout(request, FETCH_TIMEOUT)
 		// response may be used only once
@@ -99,8 +99,8 @@ self.addEventListener("install", (event) => {
 		"/assets/lo-res/corgi.png"
 	]
 
-	addResourcesToCache(lessCriticalAssets)
 	event.waitUntil(addResourcesToCache(criticalAssets))
+	addResourcesToCache(lessCriticalAssets)
 })
 
 self.addEventListener("fetch", (event) => {

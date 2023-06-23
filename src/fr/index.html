@@ -38,13 +38,15 @@ layout: with-http.njk
 	var dateOfBirthInput = getSearchParam("date-of-birth") || getCookie("date-of-birth")
 	var dateOfBirth = Boolean(dateOfBirthInput) && (parseFrenchDate(dateOfBirthInput) || parseDate(dateOfBirthInput))
 
+	var daysLeftUntilBirth;
 	if (!dateOfBirth) {
 		dateOfBirth = new Date()
 		dateOfBirth.setDate(dateOfBirth.getDate() + 40 * 7)
+		daysLeftUntilBirth = computeDaysBetween(dateOfBirth, new Date())
+	} else {
+		daysLeftUntilBirth = computeDaysBetween(dateOfBirth, new Date())
+		displayLatestWeekNumber(daysLeftUntilBirth)
 	}
-
-	var daysLeftUntilBirth = computeDaysBetween(dateOfBirth, new Date())
-	displayLatestWeekNumber(daysLeftUntilBirth)
 
 	var articles = []
 	var currentArticleIndex = -1
@@ -209,7 +211,6 @@ layout: with-http.njk
 		resetLink.title = 'Réinitialiser'
 
 		var latestWeekNumberHeading = document.getElementById('latest-week-number')
-		label = document.createTextNode(label)
 		latestWeekNumberHeading.appendChild(label)
 
 		setDisplay('latest-week-number', true)
@@ -225,27 +226,30 @@ layout: with-http.njk
 
 		var currentWeekNumberHeading = document.getElementById('current-week-number')
 		currentWeekNumberHeading.innerText = ''
-
-		label = document.createTextNode(label)
 		currentWeekNumberHeading.appendChild(label)
 
 		setDisplay('current-week-number', true)
 	}
 
 	function computeWeekLabel(daysLeft) {
-		var weeksLeft = Math.floor(daysLeft / 7)
-		var currentWeekNumber = 40 - weeksLeft
+		var currentWeekNumber = Math.floor(41 - daysLeft / 7)
 
 		if (currentWeekNumber < 1) {
 			return
 		}
 
-		var label = ""
+		var label = document.createElement('span')
+		label.innerText = " " + currentWeekNumber
+
+		var sup = document.createElement('sup')
 		if (currentWeekNumber > 1) {
-			label = " " + currentWeekNumber + 'è semaine'
+			sup.innerText = 'e'
 		} else {
-			label = " " + currentWeekNumber + 'ère semaine'
+			sup.innerText = 're'
 		}
+		label.appendChild(sup)
+
+		label.appendChild(document.createTextNode(' semaine'))
 
 		return label
 	}
