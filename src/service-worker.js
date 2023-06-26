@@ -1,13 +1,25 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers
 
+const CACHE_VERSION = "v0.2"
+
 const addResourcesToCache = async (resources) => {
-	const cache = await caches.open("v1")
+	const cache = await caches.open(CACHE_VERSION)
 	await cache.addAll(resources)
 }
 
 const putInCache = async (request, response) => {
-	const cache = await caches.open("v1")
+	const cache = await caches.open(CACHE_VERSION)
 	await cache.put(request, response)
+}
+
+const deleteStaleCaches = async() => {
+	var cacheNames = await caches.keys();
+	for (const cache of cacheNames) {
+		if (cache !== CACHE_VERSION) {
+			console.log('delete ', cache)
+			await caches.delete(cache)
+		}
+	}
 }
 
 const FETCH_TIMEOUT = 30 * 1000
@@ -36,18 +48,18 @@ const refreshCacheFromNetwork = async (request) => {
 }
 
 const cacheFirst = async ({ request, preloadResponsePromise, fallbackUrl }) => {
-	// try to use (and cache) the preloaded response, if it's there
-	const preloadResponse = await preloadResponsePromise
-	if (preloadResponse) {
-		putInCache(request, preloadResponse.clone())
-		return preloadResponse
-	}
-
 	// try to get the resource from the cache
 	const responseFromCache = await caches.match(request, { ignoreSearch: true })
 	if (responseFromCache) {
 		refreshCacheFromNetwork(request)
 		return responseFromCache
+	}
+
+	// try to use (and cache) the preloaded response, if it's there
+	const preloadResponse = await preloadResponsePromise
+	if (preloadResponse) {
+		putInCache(request, preloadResponse.clone())
+		return preloadResponse
 	}
 
 	// try to get the resource from the network
@@ -85,6 +97,8 @@ self.addEventListener("activate", (event) => {
 })
 
 self.addEventListener("install", (event) => {
+	deleteStaleCaches()
+
 	const criticalAssets = [
 		"/",
 		"/408/",

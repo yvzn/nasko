@@ -42,11 +42,13 @@ This project uses graphics under _open_ or _permissive_ licences:
 Batch convert hi-res images to lo-res (using ImageMagick)
 
 ```bash
-ls -1 hi-res/*png | xargs -I % sh -c 'convert % -resize 128x128 -filter Lanczos lo-res/%'
+cd src/assets/hi-res
+ls -1 *.png | xargs -I % sh -c 'convert % -resize 128x128 -filter Lanczos ../lo-res/%'
 ```
 
 Optimize PNGs (using pngquant)
 
 ```bash
+cd src/assets/hi-res
 ls -1 *.png | xargs pngquant --force --strip --speed 1
 ```
