@@ -1,0 +1,30 @@
+---
+title: À propos de ce site
+---
+
+<main class="menu">
+	<header>
+		<h2>À propos de...</h2>
+	</header>
+	<nav><a id="back" href="../menu/">Fermer</a></nav>
+	<section>
+		<article>
+			<p>A bientôt bébé est un service <a href="https://github.com/yvzn/nasko/" target="_blank"
+					rel="noopener">open source</a> maintenu par des bénévoles.</p>
+			<p><u>Avertissement&nbsp;:</u> le contenu est rédigé manuellement par des parents 😊,
+				il n'est pas basé sur des informations médicales de qualité professionnelle et
+				peut être inexact. Demandez systématiquement conseil à un professionel de santé 🩺.</p>
+			<img src="/assets/hi-res/developer.png" alt="" width='128' height='128'/>
+		</article>
+	</section>
+</main>
+
+<script>
+	function goBack(event) {
+		event.preventDefault()
+		history.back()
+	}
+
+	var back = document.getElementById("back")
+	back.addEventListener("click", goBack)
+</script>

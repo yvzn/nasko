@@ -8,10 +8,13 @@ layout: with-utils.njk
 	<section>
 		<img src="/assets/hi-res/crib.png" alt="Un berceau entouré de ballons" width='128' height='128' />
 		<h1>À bientôt bébé !</h1>
-		<p>Des conseils pour accompagner la grossesse<br>et préparer l'arrivée de bébé.</p>
+		<p>Des conseils pour accompagner la grossesse et préparer l'arrivée de bébé.</p>
 		<noscript>
 			<p>JavaScript semble désactivé&nbsp;: certaines fonctionnalités du site ne seront pas disponibles.</p>
 		</noscript>
+		<p><small><u>Avertissement&nbsp;:</u> ce site est maintenu par des parents bénévoles 😊,
+				il n'est pas basé sur des informations médicales de qualité professionnelle et peut être
+				inexact.</small></p>
 	</section>
 	<footer>
 		<a id="sitemap" class="action primary" href="./fr/carte-du-site/">Commencer</a>
@@ -55,7 +58,7 @@ layout: with-utils.njk
 		}
 	}
 
-	window.addEventListener('load', function() {
+	window.addEventListener('load', function () {
 		registerServiceWorker()
 	});
 </script>
