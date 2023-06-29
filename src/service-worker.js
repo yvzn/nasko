@@ -1,6 +1,6 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers
 
-const CACHE_VERSION = "v0.2"
+const CACHE_VERSION = "v0.3"
 
 const addResourcesToCache = async (resources) => {
 	const cache = await caches.open(CACHE_VERSION)
@@ -12,7 +12,7 @@ const putInCache = async (request, response) => {
 	await cache.put(request, response)
 }
 
-const deleteStaleCaches = async() => {
+const deleteOldCacheVersion = async () => {
 	var cacheNames = await caches.keys();
 	for (const cache of cacheNames) {
 		if (cache !== CACHE_VERSION) {
@@ -51,7 +51,9 @@ const cacheFirst = async ({ request, preloadResponsePromise, fallbackUrl }) => {
 	// try to get the resource from the cache
 	const responseFromCache = await caches.match(request, { ignoreSearch: true })
 	if (responseFromCache) {
-		refreshCacheFromNetwork(request)
+		if (!await preloadResponsePromise) {
+			refreshCacheFromNetwork(request)
+		}
 		return responseFromCache
 	}
 
@@ -97,7 +99,7 @@ self.addEventListener("activate", (event) => {
 })
 
 self.addEventListener("install", (event) => {
-	deleteStaleCaches()
+	deleteOldCacheVersion()
 
 	const criticalAssets = [
 		"/",

@@ -10,16 +10,15 @@ layout: with-utils.njk
 		<p>Les cookies permettent de <em>sauvegarder vos paramètres de personnalisation</em> (facultatif).</p>
 
 		<p><small>Ce sont de petites quantités de données stockées sur votre appareil comme
-			témoins de connexion.</small></p>
-
-		<p><small>Ils sont conservés pendant la durée d'utilisation et vous pouvez les supprimer à tout moment depuis le menu
-			principal.</small></p>
+				témoins de connexion. Ils sont conservés pendant la durée d'utilisation. Vous
+				pouvez les supprimer à tout moment depuis le menu principal.</small></p>
 
 		<img src="/assets/hi-res/cookie.png" alt="Cookie" width='128' height='128' />
 	</section>
 	<footer>
 		<form action="../estimation-date-naissance/">
-			<input type="submit" value="Refuser" class="action secondary">
+			<input type="submit" id="decline" value="Refuser" class="action secondary">
+			<input type="submit" id="delete" value="Effacer" hidden class="action secondary hidden">
 			<input type="submit" value="Accepter" class="action primary">
 		</form>
 	</footer>
@@ -43,4 +42,18 @@ layout: with-utils.njk
 
 	var form = document.getElementsByTagName("form")[0]
 	form.addEventListener("submit", saveCookieConsent)
+
+	// eslint-disable-next-line no-undef
+	var hasCookieConsent = hasCookie("cookie-consent", "true")
+
+	var declineButton = document.getElementById('decline')
+	var deleteButton = document.getElementById('delete')
+
+	setDisplay(declineButton, !hasCookieConsent)
+	setDisplay(deleteButton, hasCookieConsent)
+
+	function setDisplay(element, isDisplayed) {
+		element.hidden = !isDisplayed
+		element.style.display = element.hidden ? 'none' : 'block'
+	}
 </script>
