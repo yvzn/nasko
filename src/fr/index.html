@@ -346,4 +346,28 @@ layout: with-http.njk
 			}
 		)
 	}
+
+	var touchStartX = 0
+	var touchEndX = 0
+
+	function checkDirection() {
+		if (touchEndX < touchStartX) clickButton('next')
+		if (touchEndX > touchStartX) clickButton('previous')
+
+		function clickButton(elementId) {
+			var button = document.getElementById(elementId)
+			if (!button.disabled) {
+				button.click()
+			}
+		}
+	}
+
+	document.addEventListener('touchstart', function (event) {
+		touchStartX = event.changedTouches[0].screenX
+	})
+
+	document.addEventListener('touchend', function (event) {
+		touchEndX = event.changedTouches[0].screenX
+		checkDirection()
+	})
 </script>
