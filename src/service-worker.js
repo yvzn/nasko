@@ -1,6 +1,6 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers
 
-const CACHE_VERSION = "v0.3"
+const CACHE_VERSION = "v0.4"
 
 const addResourcesToCache = async (resources) => {
 	const cache = await caches.open(CACHE_VERSION)
