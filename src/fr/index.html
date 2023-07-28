@@ -249,7 +249,11 @@ layout: with-http.njk
 		}
 		label.appendChild(sup)
 
-		label.appendChild(document.createTextNode(' semaine'))
+		label.appendChild(document.createTextNode(' semaine '))
+
+		var small = document.createElement('small')
+		small.innerText = '(SA ' + (currentWeekNumber + 1) + ')'
+		label.appendChild(small)
 
 		return label
 	}
