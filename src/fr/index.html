@@ -249,10 +249,13 @@ layout: with-http.njk
 		}
 		label.appendChild(sup)
 
-		label.appendChild(document.createTextNode(' semaine '))
+		var weekLabel = document.createElement('abbr')
+		weekLabel.setAttribute('title', 'semaine')
+		weekLabel.innerText = ' sem. '
+		label.appendChild(weekLabel)
 
 		var small = document.createElement('small')
-		small.innerText = '(SA ' + (currentWeekNumber + 1) + ')'
+		small.innerText = '(SG ' + (currentWeekNumber - 1) + ')'
 		label.appendChild(small)
 
 		return label
