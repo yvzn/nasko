@@ -145,6 +145,15 @@ input {
 		padding: .5rem;
 	}
 
+	&[type="number"] {
+		border-radius: .75rem;
+		border: solid .1rem $light-dimmed-color;
+		font-size: 1rem;
+		margin: .5rem 0 0 0;
+		padding: .5rem;
+		width: 5rem;
+	}
+
 	section#content & {
 		accent-color: $light-accent2-color;
 	}

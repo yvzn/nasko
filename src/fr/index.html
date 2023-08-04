@@ -33,6 +33,8 @@ layout: with-http.njk
 <script>
 	// eslint-disable-next-line no-undef
 	var httpGet = http.get
+	// eslint-disable-next-line no-undef
+	var getDaysBetween = computeDaysBetween
 
 	// eslint-disable-next-line no-undef
 	var dateOfBirthInput = getSearchParam("date-of-birth") || getCookie("date-of-birth")
@@ -42,9 +44,9 @@ layout: with-http.njk
 	if (!dateOfBirth) {
 		dateOfBirth = new Date()
 		dateOfBirth.setDate(dateOfBirth.getDate() + 40 * 7)
-		daysLeftUntilBirth = computeDaysBetween(dateOfBirth, new Date())
+		daysLeftUntilBirth = getDaysBetween(dateOfBirth, new Date())
 	} else {
-		daysLeftUntilBirth = computeDaysBetween(dateOfBirth, new Date())
+		daysLeftUntilBirth = getDaysBetween(dateOfBirth, new Date())
 		displayLatestWeekNumber(daysLeftUntilBirth)
 	}
 
@@ -90,12 +92,6 @@ layout: with-http.njk
 	function validateDate(date) {
 		if (isNaN(date.getTime())) return undefined
 		return date
-	}
-
-	function computeDaysBetween(latestDate, earliestDate) {
-		var millisecondsBetweenDates = latestDate.getTime() - earliestDate.getTime()
-		var millisecondsInDay = 1000 * 60 * 60 * 24
-		return Math.floor(millisecondsBetweenDates / millisecondsInDay)
 	}
 
 	function showContent() {
@@ -352,10 +348,14 @@ layout: with-http.njk
 
 	var touchStartX = 0
 	var touchEndX = 0
+	var touchStartY = 0
+	var touchEndY = 0
 
 	function checkDirection() {
-		if (touchEndX < touchStartX) clickButton('next')
-		if (touchEndX > touchStartX) clickButton('previous')
+		if (Math.abs(touchEndX - touchStartX) > Math.abs(touchEndY - touchStartY)) {
+			if (touchEndX < touchStartX) clickButton('next')
+			if (touchEndX > touchStartX) clickButton('previous')
+		}
 
 		function clickButton(elementId) {
 			var button = document.getElementById(elementId)
@@ -367,10 +367,12 @@ layout: with-http.njk
 
 	document.addEventListener('touchstart', function (event) {
 		touchStartX = event.changedTouches[0].screenX
+		touchStartY = event.changedTouches[0].screenY
 	})
 
 	document.addEventListener('touchend', function (event) {
 		touchEndX = event.changedTouches[0].screenX
+		touchEndY = event.changedTouches[0].screenY
 		checkDirection()
 	})
 </script>

@@ -60,3 +60,14 @@ function createParser(keyValueSeparator, entrySeparator) {
 		return result
 	}
 }
+
+// eslint-disable-next-line no-unused-vars
+function computeDaysBetween(latestDate, earliestDate) {
+	var oneUTCDayInMilliseconds = 1000 * 60 * 60 * 24
+
+	// compute in UTC because UTC days always lasts 24 hours (unlike in other time formats with DST)
+	var earliest = Date.UTC(earliestDate.getFullYear(), earliestDate.getMonth(), earliestDate.getDate())
+	var latest = Date.UTC(latestDate.getFullYear(), latestDate.getMonth(), latestDate.getDate())
+
+	return (latest - earliest) / oneUTCDayInMilliseconds
+}
