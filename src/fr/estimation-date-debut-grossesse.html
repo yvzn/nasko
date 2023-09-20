@@ -1,0 +1,86 @@
+---
+title: Date de début de la grossesse
+layout: with-utils.njk
+---
+
+<main>
+	<section>
+		<form action="../" id="date-of-conception-form">
+			<img src="/assets/hi-res/calendar.png" alt="Calendrier" width='128' height='128' />
+			<h1>Date de début de grossesse</h1>
+
+			<p>Elle permet d'<em>afficher du contenu personnalisé</em> en fonction du nombre
+				de jours avant la naissance (facultatif).</p>
+
+			<label>
+				Date de conception estimée&nbsp;:
+				<input type="date" name="date-of-conception" id="date-of-conception" required
+					placeholder="jour/mois/annee">
+			</label>
+
+			<label>
+				Ou date de dernières règles&nbsp;:
+				<input type="date" id="date-last-period" placeholder="jour/mois/annee">
+			</label>
+
+			<p><small>Vous pouvez la modifier ou l'effacer à tout moment depuis le menu principal.</small></p>
+		</form>
+	</section>
+	<footer>
+		<form action="../">
+			<input type="submit" value="Ignorer" class="action secondary">
+		</form>
+		<input type="submit" value="Continuer" class="action primary" form="date-of-conception-form">
+	</footer>
+</main>
+
+<script>
+	// eslint-disable-next-line no-undef
+	var hasCookieConsent = hasCookie("cookie-consent", "true")
+
+	function saveDateOfConception(submitEvent) {
+		var dateOfConception = document.getElementById("date-of-conception")
+
+		if (submitEvent.submitter && submitEvent.submitter.value === "Ignorer") {
+			dateOfConception.value = ''
+		}
+
+		if (hasCookieConsent) {
+			// eslint-disable-next-line no-undef
+			setCookie("date-of-conception", dateOfConception.value)
+		}
+	}
+
+	var forms = Array.prototype.slice.call(document.getElementsByTagName("form"))
+	forms.forEach(function (form) { form.addEventListener("submit", saveDateOfConception) })
+
+	function initDates() {
+		// eslint-disable-next-line no-undef
+		var dateOfConception = getCookie("date-of-conception")
+
+		if (dateOfConception && !isNaN(new Date(dateOfConception))) {
+			document.getElementById("date-of-conception").value = dateOfConception
+			updateDateLastPeriod()
+		}
+	}
+
+	addEventListener('load', initDates);
+
+	function updateDateOfConception() {
+		var dateLastPeriod = new Date(document.getElementById("date-last-period").value)
+		var dateOfConception = new Date(dateLastPeriod)
+		dateOfConception.setDate(dateOfConception.getDate() + 15)
+		document.getElementById("date-of-conception").value = dateOfConception.toISOString().substring(0, 10)
+	}
+
+	document.getElementById("date-last-period").addEventListener('change', updateDateOfConception)
+
+	function updateDateLastPeriod() {
+		var dateOfConception = new Date(document.getElementById("date-of-conception").value)
+		var dateLastPeriod = new Date(dateOfConception)
+		dateLastPeriod.setDate(dateLastPeriod.getDate() - 15)
+		document.getElementById("date-last-period").value = dateLastPeriod.toISOString().substring(0, 10)
+	}
+
+	document.getElementById("date-of-conception").addEventListener('change', updateDateLastPeriod)
+</script>

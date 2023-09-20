@@ -1,6 +1,6 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers
 
-const CACHE_VERSION = "v0.5"
+const CACHE_VERSION = "v0.6"
 
 const addResourcesToCache = async (resources) => {
 	const cache = await caches.open(CACHE_VERSION)
@@ -48,17 +48,24 @@ const refreshCacheFromNetwork = async (request) => {
 }
 
 const cacheFirst = async ({ request, preloadResponsePromise, fallbackUrl }) => {
+	// try to use the preloaded response, if it's there
+	let preloadResponse = undefined
+	try {
+		preloadResponse = await preloadResponsePromise
+	} catch (error) {
+		preloadResponse = undefined
+	}
+
 	// try to get the resource from the cache
 	const responseFromCache = await caches.match(request, { ignoreSearch: true })
 	if (responseFromCache) {
-		if (!await preloadResponsePromise) {
+		if (!preloadResponse) {
 			refreshCacheFromNetwork(request)
 		}
 		return responseFromCache
 	}
 
-	// try to use (and cache) the preloaded response, if it's there
-	const preloadResponse = await preloadResponsePromise
+	// try to use the preloaded response, if it's there
 	if (preloadResponse) {
 		putInCache(request, preloadResponse.clone())
 		return preloadResponse
@@ -96,17 +103,16 @@ const enableNavigationPreload = async () => {
 
 self.addEventListener("activate", (event) => {
 	event.waitUntil(enableNavigationPreload())
+	deleteOldCacheVersion()
 })
 
 self.addEventListener("install", (event) => {
-	deleteOldCacheVersion()
-
 	const criticalAssets = [
 		"/",
 		"/408/",
 		"/css/style.css",
 		"/fr/consentement-cookies/",
-		"/fr/estimation-date-naissance/",
+		"/fr/estimation-date-debut-grossesse/",
 	]
 
 	const lessCriticalAssets = [

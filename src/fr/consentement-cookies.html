@@ -16,7 +16,7 @@ layout: with-utils.njk
 		<img src="/assets/hi-res/cookie.png" alt="Cookie" width='128' height='128' />
 	</section>
 	<footer>
-		<form action="../estimation-date-naissance/">
+		<form action="../estimation-date-debut-grossesse/">
 			<input type="submit" id="decline" value="Refuser" class="action secondary">
 			<input type="submit" id="delete" value="Effacer" hidden class="action secondary hidden">
 			<input type="submit" value="Accepter" class="action primary">
@@ -36,7 +36,7 @@ layout: with-utils.njk
 			var alreadyExpired = "Thu, 01 Jan 1970 00:00:00 GMT"
 			setCookieFn("cookie-consent", false, alreadyExpired)
 			setCookieFn("cookie-consent-date", undefined, alreadyExpired)
-			setCookieFn("date-of-birth", undefined, alreadyExpired)
+			setCookieFn("date-of-conception", undefined, alreadyExpired)
 		}
 	}
 

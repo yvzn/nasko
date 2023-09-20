@@ -44,7 +44,7 @@ async function jsmin(code, callback) {
 	}
 }
 
-function toWeekNumber(daysLeft) {
-	var weekNumber = Math.floor(41 - daysLeft / 7)
+function toWeekNumber(days) {
+	var weekNumber = Math.floor(days / 7)
 	return Math.max(weekNumber, 0)
 }

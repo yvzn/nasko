@@ -1,0 +1,74 @@
+---
+title: Conseils
+layout: with-utils.njk
+---
+
+<main>
+	<nav>
+		<a href="./menu/">Menu</a>
+	</nav>
+	<section id="content">
+		<progress>Veuillez patienter...</progress>
+	</section>
+	<footer>
+		<a class="action primary" href="/">Accueil</a>
+	</footer>
+</main>
+<script>
+	// eslint-disable-next-line no-undef
+	var dateOfConceptionInput = getSearchParam("date-of-conception") || getCookie("date-of-conception")
+	var dateOfConception = Boolean(dateOfConceptionInput) && (parseFrenchDate(dateOfConceptionInput) || parseDate(dateOfConceptionInput))
+
+	// eslint-disable-next-line no-undef
+	var days = Boolean(dateOfConception) && computeDaysBetween(new Date(), dateOfConception) || 0
+
+	var articles = getArticles()
+
+	var latestArticle = findLatestArticle(days)
+
+	if (latestArticle) {
+		window.location.replace(latestArticle.url)
+	} else {
+		window.location.replace("./estimation-date-debut-grossesse/")
+	}
+
+	function parseFrenchDate(date) {
+		var parsed = new Date(Date.parse(date
+			.split("/")
+			.reverse()
+			.join("-")))
+		return validateDate(parsed)
+	}
+	function parseDate(date) {
+		var parsed = new Date(date)
+		return validateDate(parsed)
+	}
+	function validateDate(date) {
+		if (isNaN(date.getTime()))
+			return undefined
+
+		return date
+	}
+
+	function findLatestArticle(maximumDays) {
+		var latestArticle = { url: undefined, days: Number.NEGATIVE_INFINITY }
+		for (var i = 0; i < articles.length && articles[i].days <= maximumDays; ++i) {
+			if (latestArticle.days <= articles[i].days) {
+				latestArticle = articles[i]
+			}
+		}
+		if (latestArticle.url) {
+			return latestArticle
+		}
+		return undefined
+	}
+
+	function getArticles() {
+		return [{% for item in collections.articlesFrancaisTries %}
+			{
+				"url": "{{ item.url | url }}",
+				"days": {{ item.data.days }}
+			}
+			{% if not loop.last %},{% endif %}{% endfor %}]
+	}
+</script>

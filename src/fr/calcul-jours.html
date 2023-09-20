@@ -19,9 +19,11 @@ title: Calcul du nombre de jours restants
 					semaine(s)
 				</label>
 				<label>
-					Jours restant : <input type="number" id="days-left" readonly /> jour(s)
+					Jours : <input type="number" id="days" readonly /> jour(s)
 				</label>
 				<label>
+					Jours restant : <input type="number" id="days-left" readonly /> jour(s)
+				</label> <label>
 					Nombre total de semaines : <input type="number" id="total" value="40" /> semaines
 				</label>
 			</article>
@@ -37,10 +39,12 @@ title: Calcul du nombre de jours restants
 		var week = document.getElementById('week')
 		var sa = document.getElementById('sa')
 		var sg = document.getElementById('sg')
+		var days = document.getElementById('days')
 		var daysLeft = document.getElementById('days-left')
 		var total = document.getElementById('total')
 		if (week.value && total.value) {
-			daysLeft.value = (total.value - week.value) * 7 + 7
+			days.value = (week.value - 1) * 7
+			daysLeft.value = (total.value - week.value + 1) * 7
 			sg.value = week.value - 1
 			sa.value = Number(sg.value) + 2
 		}
