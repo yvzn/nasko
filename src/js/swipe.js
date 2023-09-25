@@ -27,7 +27,7 @@ document.addEventListener('touchend', function (event) {
 
 	function clickButton(elementId) {
 		var button = document.getElementById(elementId)
-		if (button && !button.disabled) {
+		if (button) {
 			return function () {
 				button.click()
 			}
