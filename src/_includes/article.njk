@@ -8,10 +8,11 @@ layout: default.njk
 	<header>
 		{% set weekNumber = days | toWeekNumber %}
 		{% if weekNumber > 0 %}
-			<h2>
-				Semaine {{ weekNumber }}
-				<small>(SA {{ weekNumber + 2 }})</small>
-			</h2>
+			<h3>
+				<acronym title="semaines d'aménorhée">SA</acronym>
+				{{ weekNumber + 2 }}
+			</h3>
+			<h2>Semaine {{ weekNumber }}</h2>
 		{% endif %}
 	</header>
 	<nav>
@@ -23,11 +24,13 @@ layout: default.njk
 	<footer>
 		{% set previous = collections.articlesFrancaisTries | getPreviousCollectionItem %}
 		{% if previous %}
-			<a href="{{ previous.url | url }}" class="action secondary">Précédent</a>
+			<a href="{{ previous.url | url }}" class="action secondary" id="previous">Précédent</a>
 		{% endif %}
 		{% set next = collections.articlesFrancaisTries | getNextCollectionItem %}
 		{% if next %}
-			<a href="{{ next.url | url }}" class="action primary">Suivant</a>
+			<a href="{{ next.url | url }}" class="action primary" id="next">Suivant</a>
 		{% endif %}
 	</footer>
 </main>
+
+<script src="/js/swipe.js"></script>

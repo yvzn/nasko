@@ -5,7 +5,9 @@ module.exports = function (eleventyConfig) {
 	eleventyConfig.addNunjucksAsyncFilter("jsmin", jsmin)
 	eleventyConfig.addFilter("toWeekNumber", toWeekNumber)
 	eleventyConfig.addPassthroughCopy("src/assets")
+	// only some selected JS files are copied, the rest are inlined directly in pages
 	eleventyConfig.addPassthroughCopy("src/service-worker.js")
+	eleventyConfig.addPassthroughCopy("src/js/swipe.js")
 	eleventyConfig.addTemplateFormats("scss")
 
 	eleventyConfig.addExtension("scss", {

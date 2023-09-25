@@ -9,9 +9,6 @@ layout: with-utils.njk
 		<img src="/assets/hi-res/crib.png" alt="Un berceau entouré de ballons" width='128' height='128' />
 		<h1>À bientôt bébé !</h1>
 		<p>Des conseils pour accompagner la grossesse et préparer l'arrivée de bébé.</p>
-		<noscript>
-			<p>JavaScript semble désactivé&nbsp;: certaines fonctionnalités du site ne seront pas disponibles.</p>
-		</noscript>
 		<p><small><u>Avertissement&nbsp;:</u> ce site alimenté bénévolement
 				n'est pas basé sur des informations médicales de qualité professionnelle&nbsp;;
 				malgré toute l'attention portée, il peut donc s'évérer inexact.</small></p>
@@ -31,7 +28,7 @@ layout: with-utils.njk
 	var startLink = document.getElementById('start')
 	var continueLink = document.getElementById('continue')
 
-	setDisplay(sitemapLink, false) // only for noscript users
+	setDisplay(sitemapLink, false) // sitemapLink displayed only for noscript users
 	setDisplay(startLink, !hasCookieConsent)
 	setDisplay(continueLink, hasCookieConsent)
 
