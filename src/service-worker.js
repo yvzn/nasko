@@ -1,6 +1,6 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers
 
-const CACHE_VERSION = "v0.6"
+const CACHE_VERSION = "v0.7"
 
 const addResourcesToCache = async (resources) => {
 	const cache = await caches.open(CACHE_VERSION)
@@ -60,7 +60,7 @@ const cacheFirst = async ({ request, preloadResponsePromise, fallbackUrl }) => {
 	const responseFromCache = await caches.match(request, { ignoreSearch: true })
 	if (responseFromCache) {
 		if (!preloadResponse) {
-			refreshCacheFromNetwork(request)
+			await refreshCacheFromNetwork(request)
 		}
 		return responseFromCache
 	}
