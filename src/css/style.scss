@@ -30,6 +30,7 @@ $space-4x: 4 * $space-1x;
 
 html {
 	height: 100%;
+	height: 100svh;
 	margin: 0;
 }
 
@@ -37,6 +38,7 @@ body {
 	background-color: $light-neutral-color;
 	color: $light-foreground-color;
 	height: 100%;
+	height: 100svh;
 	margin: 0 auto;
 	max-width: 34rem;
 	width: 100%;
@@ -45,6 +47,7 @@ body {
 main {
 	background-color: $light-neutral-color;
 	height: 100%;
+	height: 100svh;
 }
 
 h1 {
