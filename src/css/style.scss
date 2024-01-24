@@ -3,15 +3,15 @@ $light-background-color: whitesmoke;
 $light-foreground-color: #1d1a05;
 $light-neutral-color: white;
 $light-accent1-color: #47804e;
-$light-accent2-color: hsl(34, 100%, 33%);
+$light-accent2-color: hsl(34deg 100% 33%);
 $light-dimmed-color: #6d6a75;
 
 $dark-background-color: #0f1302;
 $dark-foreground-color: whitesmoke;
 $dark-neutral-color: #1d1a05;
-$dark-accent1-color: hsl(127, 30%, 58%);
-$dark-accent2-color: hsl(34, 100%, 40%);
-$dark-dimmed-color: hsl(256, 5%, 66%);
+$dark-accent1-color: hsl(127deg 30% 58%);
+$dark-accent2-color: hsl(34deg 100% 40%);
+$dark-dimmed-color: hsl(256deg 5% 66%);
 
 $dark-mode-toggle: dark;
 $grid-layout-toggle: grid;
@@ -21,11 +21,10 @@ $space-2x: 2 * $space-1x;
 $space-4x: 4 * $space-1x;
 
 * {
+	box-sizing: border-box;
 	font-family:
 		/* https://css-tricks.com/snippets/css/font-stacks/ */
-		"Segoe UI", Candara, "Bitstream Vera Sans", "DejaVu Sans", "Bitstream Vera Sans", "Trebuchet MS", Verdana, "Verdana Ref", sans-serif;
-
-	box-sizing: border-box;
+		"Segoe UI", Candara, "Bitstream Vera Sans", "DejaVu Sans", "Trebuchet MS", Verdana, "Verdana Ref", sans-serif;
 }
 
 html {
@@ -51,13 +50,13 @@ main {
 }
 
 h1 {
-	margin: 0 0 $space-1x 0;
 	color: $light-accent2-color;
+	margin: 0 0 $space-1x 0;
 }
 
 h2 {
-	margin: 0;
 	color: $light-accent2-color;
+	margin: 0;
 }
 
 section {
@@ -76,8 +75,8 @@ form {
 }
 
 .action {
-	border-radius: .75rem;
 	border: solid .1rem;
+	border-radius: .75rem;
 	cursor: pointer;
 	display: inline-block;
 	font-size: 1rem;
@@ -111,8 +110,8 @@ form {
 	main {
 		box-shadow:
 			/* https://shadows.brumm.af/ */
-			0px 12.5px 10px -10px rgba(0, 0, 0, 0.035),
-			0px 100px 80px -10px rgba(0, 0, 0, 0.07);
+			0 12.5px 10px -10px rgba(0, 0, 0, 3.5%),
+			0 100px 80px -10px rgba(0, 0, 0, 7%);
 	}
 
 	.action {
@@ -140,25 +139,34 @@ input {
 	accent-color: $light-dimmed-color;
 
 	&[type="date"] {
-		border-radius: .75rem;
 		border: solid .1rem $light-dimmed-color;
+		border-radius: .75rem;
 		cursor: pointer;
 		font-size: 1rem;
-		margin: .5rem 0 0 0;
+		margin: .5rem 0 0;
 		padding: .5rem;
 	}
 
 	&[type="number"] {
-		border-radius: .75rem;
 		border: solid .1rem $light-dimmed-color;
+		border-radius: .75rem;
 		font-size: 1rem;
-		margin: .5rem 0 0 0;
+		margin: .5rem 0 0;
 		padding: .5rem;
 		width: 5rem;
 	}
 
 	section#content & {
 		accent-color: $light-accent2-color;
+	}
+}
+
+a {
+	color: $light-dimmed-color;
+	outline-offset: .75rem;
+
+	article & {
+		outline-offset: 0;
 	}
 }
 
@@ -176,23 +184,14 @@ header {
 
 	h3 {
 		color: $light-dimmed-color;
-		margin: 0;
 		font-size: small;
+		margin: 0;
 		text-decoration: underline;
 	}
 }
 
 nav {
 	padding: $space-1x;
-}
-
-a {
-	color: $light-dimmed-color;
-	outline-offset: .75rem;
-
-	article & {
-		outline-offset: 0;
-	}
 }
 
 footer {
@@ -219,8 +218,8 @@ footer {
 
 	li {
 		list-style-type: none;
-		text-align: left;
 		padding-left: 1.5rem;
+		text-align: left;
 		text-indent: -1.5rem;
 	}
 
@@ -448,14 +447,13 @@ footer {
 		}
 
 		section {
-			position: initial;
+			grid-column: 1/3;
+			grid-row: 2/3;
 			margin: auto;
+			position: initial;
 			max-height: 100%;
 			top: auto;
 			transform: none;
-
-			grid-column: 1/3;
-			grid-row: 2/3;
 
 			&#content,
 			&#sitemap {
