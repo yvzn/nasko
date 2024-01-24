@@ -1,6 +1,6 @@
 {
 	"name": "nasko",
-	"version": "0.8",
+	"version": "0.9",
 	"description": "Simple tips to welcome your future baby",
 	"private": "true",
 	"scripts": {
@@ -15,7 +15,7 @@
 		"eslint-plugin-html": "^7.1.0",
 		"sass": "^1.60.0",
 		"stylelint": "^16.0.2",
-		"stylelint-config-standard": "^35.0.0",
+		"stylelint-config-standard": "^36.0.0",
 		"stylelint-order": "^6.0.3",
 		"terser": "^5.16.6"
 	}
