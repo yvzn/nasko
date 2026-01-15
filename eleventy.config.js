@@ -1,7 +1,8 @@
-const { minify } = require("terser")
-const sass = require("sass")
+import { minify } from "terser"
+import { compileString } from "sass"
+import pugPlugin from "@11ty/eleventy-plugin-pug";
 
-module.exports = function (eleventyConfig) {
+export default function (eleventyConfig) {
 	eleventyConfig.addNunjucksAsyncFilter("jsmin", jsmin)
 	eleventyConfig.addFilter("toWeekNumber", toWeekNumber)
 	eleventyConfig.addPassthroughCopy("src/assets")
@@ -14,7 +15,7 @@ module.exports = function (eleventyConfig) {
 		outputFileExtension: "css",
 
 		compile: async function (inputContent) {
-			const result = sass.compileString(inputContent, { sourceMap: false })
+			const result = compileString(inputContent, { sourceMap: false })
 			return async () => {
 				return result.css
 			}
@@ -26,6 +27,8 @@ module.exports = function (eleventyConfig) {
 			return b.data.daysLeft - a.data.daysLeft
 		})
 	})
+
+	eleventyConfig.addPlugin(pugPlugin);
 
 	// Return your Object options:
 	return {

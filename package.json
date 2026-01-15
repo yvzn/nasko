@@ -3,6 +3,7 @@
 	"version": "0.9",
 	"description": "Simple tips to welcome your future baby",
 	"private": "true",
+	"type": "module",
 	"scripts": {
 		"dev": "eleventy --serve",
 		"build": "eleventy"
@@ -10,7 +11,7 @@
 	"author": "Yvan Razafindramanana",
 	"license": "Apache-2.0",
 	"devDependencies": {
-		"@11ty/eleventy": "^2.0.0",
+		"@11ty/eleventy": "^3.1.2",
 		"@eslint/eslintrc": "^3.1.0",
 		"@eslint/js": "^9.5.0",
 		"eslint": "^9.5.0",
@@ -21,5 +22,8 @@
 		"stylelint-config-standard": "^40.0.0",
 		"stylelint-order": "^7.0.1",
 		"terser": "^5.16.6"
+	},
+	"dependencies": {
+		"@11ty/eleventy-plugin-pug": "^1.0.0"
 	}
 }
