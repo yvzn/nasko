@@ -35,12 +35,16 @@ jobs:
     runOnce:
       deploy:
         steps:
-        - task: AzureCLI@2
-          displayName: 'upload files to Azure'
+        - powershell: |
+            Set-Location $(Pipeline.Workspace)/site
+            Rename-Item -Path .htaccess.sample -NewName .htaccess
+          displayName: "Prepare files"
+        - task: CopyFilesOverSSH@0
           inputs:
-            azureSubscription: '$(azureSubscription)'
-            scriptType: 'pscore'
-            scriptLocation: 'inlineScript'
-            inlineScript: |
-              az storage blob delete-batch --account-key $(storageAccountKey) --account-name $(storageAccountName) --source `$web --delete-snapshots include
-              az storage blob upload-batch --account-key $(storageAccountKey) --account-name $(storageAccountName) --destination `$web --source $(Pipeline.Workspace)/site
+            sshEndpoint: '$(sshEndpoint)'
+            sourceFolder: '$(Pipeline.Workspace)/site'
+            contents: '**'
+            targetFolder: '$(sshTargetFolder)'
+            readyTimeout: '20000'
+            overwrite: true
+
